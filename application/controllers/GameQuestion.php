@@ -20,22 +20,29 @@ class GameQuestion extends Auth {
             exit;
         }
 
-        $data["question_no"] = $this->question_md->checkQuestionNo($game_id);
-
+        $question_no = $this->question_md->checkQuestionNo($game_id);
+				$data["question_no"] = $question_no;
         if($post = $this->input->post()){
-               
-                $d["question"]  = $post["question"];
-                $d["no"]        = $data["question_no"];
-                $d["game_id"]   = $game_id;
-                $this->question_md->save($d);
-                if(isset($post["next"])){
-                    
-                }else if(isset($post["finish"])){
+							print_r($post);
+							print_r($_FILES);
 
-                }
+							foreach($_FILES["name"] as $n){
+								if($n != ""){
+										$data = array($post["choice"],"{$game_id}_");
+								}
+							}
+                // $d["question"]  = $post["question"];
+                // $d["no"]        = $data["question_no"];
+                // $d["game_id"]   = $game_id;
+                // $this->question_md->save($d);
+                // if(isset($post["next"])){
+                //
+                // }else if(isset($post["finish"])){
+								//
+                // }
         }
 
-        
+
         $data["game_id"] = $game_id;
 		$content["content"] = $this->load->view("gamequestion/index_tpl",$data,true);
 		$this->load->view("layout_tpl",$content);
@@ -53,8 +60,8 @@ class GameQuestion extends Auth {
             if (!file_exists($config['upload_path'])) {
 			    mkdir($config['upload_path'], 0777);
 			    echo "The directory  was successfully created.";
-			   
-			} 
+
+			}
             $this->load->library('upload', $config);
 
             if ( ! $this->upload->do_upload('userfile'))

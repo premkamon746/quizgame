@@ -26,6 +26,9 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="<?=base_url()?>assets/js/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
 <script src="<?=base_url()?>assets/bootstrap/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="<?=base_url()?>assets/css/style.css" crossorigin="anonymous">
+
   </head>
 
   <body>
@@ -39,7 +42,7 @@
           <!-- <li class="active"><a href="#">Page 1</a></li>
           <li><a href="#">Page 2</a></li>
           <li><a href="#">Page 3</a></li>-->
-        </ul> 
+        </ul>
 
        <!--  <form class="navbar-form navbar-left">
           <div class="input-group">
@@ -53,8 +56,8 @@
         </form> -->
 
         <ul class="nav navbar-nav navbar-right">
-            <?php 
-                $current_class = $this->router->fetch_class(); 
+            <?php
+                $current_class = $this->router->fetch_class();
                 $current_metd = $this->router->fetch_method();
               ?>
             <?php if($this->session->userdata("login")!="login")  :?>
@@ -70,15 +73,15 @@
             <section class="wrapper"  style="max-width:800px; margin:0 auto; text-align: center;">
 
                 <?php if(!$this->login && $this->session->userdata("login")!="login" ) : ?>
-                    
+
                       <br/><br/><br/>
                       <a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a>
                       ล็อกอินก่อนจ้า
-                    
+
                 <?php else :?>
                   <?=$content?>
                 <?php endif; ?>
-            </section>   
+            </section>
         </section>
   </body>
 </html>

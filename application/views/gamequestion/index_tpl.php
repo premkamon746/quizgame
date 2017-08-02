@@ -16,13 +16,13 @@
                         <div>ภาพ</div>
                         <div class="upload_photo" style="background-color: #ffcbcb;">
                           <img src="<?=base_url()?>/assets/img/no_preview.jpg" width="276"/>
-                          <input type="file" class="form-control" id="userfile" name="userfile" placeholder="ชื่อเกม"  >
+                          <input type="file" class="form-control" id="userfile" name="userfile[]" placeholder="ชื่อเกม"  >
                         </div>
-                        <p class="help-block">หากมีภาพคำถาม เป็น file jpg,png,gif</p> 
+                        <p class="help-block">หากมีภาพคำถาม เป็น file jpg,png,gif</p>
                     </div>
                     <div class="col-lg-7">
                         <div>คำถาม</div>
-                        <textarea class="form-control" id="question" name="question" rows="5" placeholder="คำถาม" ></textarea> 
+                        <textarea class="form-control" id="question" name="choice[]" rows="5" placeholder="คำถาม" ></textarea>
                         <!-- <p class="help-block">อัพโหลดรูปภาพปก เป็น file jpg,png,gif</p> -->
                     </div>
                   </div>
@@ -34,19 +34,19 @@
 
                 <? for ($i=0; $i < 3 ; $i++) : ?>
                   <div class="choice_no" style="margin-left:120px;">
-                    
+
                         <div class="row" >
                           <div class="col-lg-5">
                               <div>ภาพข้อ <?=$i+1?>.</div>
                               <div  class="upload_photo" style="background-color: #ffcbcb;">
                                 <img src="<?=base_url()?>/assets/img/no_preview.jpg"  width="276"/>
-                                <input type="file" class="form-control choice"  name="userfile"  data-no="<?=$i+1?>" />
+                                <input type="file" class="form-control choice"  name="userfile[]"  data-no="<?=$i+1?>" />
                               </div>
-                              <p class="help-block">หากมีภาพคำถาม เป็น file jpg,png,gif</p> 
+                              <p class="help-block">หากมีภาพคำถาม เป็น file jpg,png,gif</p>
                           </div>
                           <div class="col-lg-7">
                               <div>คำตอบข้อ <?=$i+1?>. </div>
-                              <textarea class="form-control" id="choice" name="choice[]" rows="5" ></textarea> 
+                              <textarea class="form-control" id="choice" name="choice[]" rows="5" ></textarea>
                               <!-- <p class="help-block">อัพโหลดรูปภาพปก เป็น file jpg,png,gif</p> -->
                           </div>
                         </div>
@@ -75,8 +75,15 @@
 </div>
 
 
+
 <script>
 
+
+function removeImage(obj){
+  $(obj).closest(".upload_photo").find("img").prop("src","<?=base_url()?>/assets/img/no_preview.jpg");
+  $(obj).closest(".upload_photo").find("input[type='file']").val("");
+  $(obj).closest(".upload_photo").find(".removeContain").remove();
+}
 
   $(document).ready(function(){
 
@@ -93,12 +100,12 @@
     });
 
 
-    $(document).on('change','input[type=file]',function() { 
+    $(document).on('change','input[type=file]',function() {
         console.log($(this));
         $obj = $(this);
         //var fd = new FormData($(this)[0]);
         var fd = new FormData();
-        fd.append('image', $(this)[0].files[0]); 
+        fd.append('image', $(this)[0].files[0]);
 
         var choice = "";
         if($(this).prop("class")=="form-control choice"){
@@ -117,6 +124,11 @@
             {
          //some code if you want
               $obj.closest(".upload_photo").find("img").prop("src",data);
+              $obj.closest(".upload_photo").prepend('\
+                <div class="removeContain" style="position:relative;top:0;">\
+                <i class="icon-remove icon-2x icon-delete" onclick="removeImage(this);"></i>\
+                </div>\
+              ');
             }
         });
 
