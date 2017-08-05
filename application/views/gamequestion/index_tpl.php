@@ -1,9 +1,18 @@
+
 <div class="col-lg-12">
   <section class="panel">
       <header class="panel-heading ">
           <h3>สร้างเกม</h3>
       </header>
       <div class="panel-body">
+
+
+
+            <? foreach ($all_question->result() as $aq) : ?>
+                  <a href="#"><button type="button" class="btn btn-success btn-circle btn-lg"><?=$aq->no?></button></a>
+            <? endforeach?>
+                  <button type="button" class="btn btn-warning btn-circle btn-lg"><?=$all_question->num_rows()+1?></button>
+
           <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
 
 
@@ -23,6 +32,7 @@
                     <div class="col-lg-7">
                         <div>คำถาม</div>
                         <textarea class="form-control" id="question" name="choice[]" rows="5" placeholder="คำถาม" ></textarea>
+                        <input type="hidden" class="form-control"  name="point[]"  />
                         <!-- <p class="help-block">อัพโหลดรูปภาพปก เป็น file jpg,png,gif</p> -->
                     </div>
                   </div>
@@ -47,6 +57,14 @@
                           <div class="col-lg-7">
                               <div>คำตอบข้อ <?=$i+1?>. </div>
                               <textarea class="form-control" id="choice" name="choice[]" rows="5" ></textarea>
+                              <div class="col-md-3 text-right">
+                                    คะแนน :
+                              </div>
+                              <div class="col-md-7 text-left">
+                                     <input type="input" class="form-control"  name="point[]"  />
+                                     <p class="help-block">คะแนนที่ผู้เล่นจะได้รับหากเลือกคำตอบนี้ เช่น ถ้าเป็นข้อที่ถูกได้ 1 คะแนน</p>
+                              </div>
+
                               <!-- <p class="help-block">อัพโหลดรูปภาพปก เป็น file jpg,png,gif</p> -->
                           </div>
                         </div>
@@ -75,6 +93,18 @@
 </div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="memberModalLabel"> <?=isset($message)&&$message!=""?$message:""?></h4>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 
@@ -86,6 +116,10 @@ function removeImage(obj){
 }
 
   $(document).ready(function(){
+
+        <?php if(isset($message)&&$message!="") : ?>
+          $('#alertModal').modal('show');
+        <?php endif ?>
 
     $('.add_button').click(function(){
 
@@ -101,6 +135,8 @@ function removeImage(obj){
 
 
     $(document).on('change','input[type=file]',function() {
+
+
         console.log($(this));
         $obj = $(this);
         //var fd = new FormData($(this)[0]);
@@ -111,6 +147,8 @@ function removeImage(obj){
         if($(this).prop("class")=="form-control choice"){
           choice = $(this).data("no");
         }
+
+
 
 
         $.ajax({

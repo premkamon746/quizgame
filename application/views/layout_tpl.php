@@ -25,20 +25,26 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="<?=base_url()?>assets/js/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
-<script src="<?=base_url()?>assets/bootstrap/js/bootstrap.min.js" crossorigin="anonymous"></script>
+ <script src="<?=base_url()?>assets/bootstrap/js/bootstrap.min.js" crossorigin="anonymous"></script> 
 
 <link rel="stylesheet" href="<?=base_url()?>assets/css/style.css" crossorigin="anonymous">
 
   </head>
 
   <body>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default ">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">WebSiteName</a>
         </div>
-        <ul class="nav navbar-nav">
-          <li ><a href="<?=site_url("mygame"); ?>">My Games</a></li>
+        <ul class="nav navbar-nav ">
+          <li >
+            <a href="<?=site_url("mygame"); ?>">
+              <div class="btn-sm">
+                 My Games
+              </div>
+            </a>
+          </li>
           <!-- <li class="active"><a href="#">Page 1</a></li>
           <li><a href="#">Page 2</a></li>
           <li><a href="#">Page 3</a></li>-->
@@ -55,15 +61,22 @@
           </div>
         </form> -->
 
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right ">
             <?php
                 $current_class = $this->router->fetch_class();
                 $current_metd = $this->router->fetch_method();
               ?>
             <?php if($this->session->userdata("login")!="login")  :?>
-                <li><a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a></li>
+                <!-- <li><a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a></li> -->
             <?php else :?>
-                <li><a href="<?=site_url("$current_class/logout/$current_class/$current_metd")?>"><button type="button" class="btn btn-danger">ออกจากระบบ</button></a></li>
+                <li >
+                    <a href="<?=site_url("$current_class/logout/$current_class/$current_metd")?>" >
+                      <div class="btn-sm">
+                        <span class="glyphicon glyphicon-log-out"></span> Log out
+                      </div>
+                    </a>
+
+                </li>
             <?php endif?>
         </ul>
       </div>

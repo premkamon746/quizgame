@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Question_Md extends CI_Model { // คลาส Model_template สืบทอดคุณสมบัติของ CI_Model
+class Answer_Md extends CI_Model { // คลาส Model_template สืบทอดคุณสมบัติของ CI_Model
 
-	private $table = "question";
+	private $table = "answer";
 
 
 	function get($id){
@@ -28,15 +28,11 @@ class Question_Md extends CI_Model { // คลาส Model_template สืบท
 	}
 
 
-      function getAllQuestion($game_id){
-            $member_id = $this->session->userdata("member_id");
-            return $this->db->get_where($this->table, array("game_id"=>$game_id,"member_id"=>$member_id ));
-      }
+
 
 	function save($data){
 		//$data["status"] = "create";
 		$data["member_id"] = $this->session->userdata("member_id");
-
 		$this->db->set("create_date","now()",false);
 		$this->db->insert($this->table, $data);
 		return $this->db->insert_id();

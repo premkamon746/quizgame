@@ -7,30 +7,78 @@ class GameQuestion extends Auth {
 	public function __construct(){
 		parent::__construct();
 	 	$this->load->model("game_md");
-        $this->load->model("question_md");
+        	$this->load->model("question_md");
+		$this->load->model("answer_md");
 	}
 
 	public function index($game_id)
 	{
 		$data = array();
+		$data["game_id"] = $game_id;
+
+		$data["all_question"] = $this->question_md->getAllQuestion($game_id);
+
+	        if(!$this->game_md->isOwner($this->mem_id,$game_id)&&$game_id>0){
+	            echo "ไม่พบเกมส์ที่คุณเลือก";
+	            return;
+	        }
+
+        	$question_no = $this->question_md->checkQuestionNo($game_id);
+		$data["question_no"] = $question_no;
+	        if($post = $this->input->post()){
 
 
-        if(!$this->game_md->isOwner($this->mem_id,$game_id)&&$game_id>0){
-            echo "ไม่พบเกมส์ที่คุณเลือก";
-            exit;
-        }
+			if(!$this->validPoint($post["point"])){
+			      $data["message"] = "กรุณาให้คะแนนข้อที่ตอบถูกอย่างน้อย 1 ข้อ";
+				$content["content"] = $this->load->view("gamequestion/index_tpl",$data,true);
+				$this->load->view("layout_tpl",$content);
+				return;
+		      }
 
-        $question_no = $this->question_md->checkQuestionNo($game_id);
-				$data["question_no"] = $question_no;
-        if($post = $this->input->post()){
-							print_r($post);
-							print_r($_FILES);
+			  $i = 0;
+			  $question_id = 0;
 
-							foreach($_FILES["name"] as $n){
-								if($n != ""){
-										$data = array($post["choice"],"{$game_id}_");
-								}
-							}
+			foreach($_FILES['userfile']['name'] as $n){
+				$save = array();
+				if($i==0){
+					$picture = "";
+					if($n != ""){
+						$ext = pathinfo($n, PATHINFO_EXTENSION);
+						$picture = "{$game_id}_{$question_no}.{$ext}";
+					}
+					$save = array("question"=>$post["choice"][$i],
+							"picture"	=>$picture,
+							"no"		=>$question_no,
+							"game_id"	=>$game_id
+						);
+
+					$question_id = $this->question_md->save($save);
+					if($question_id <=0){
+						$data["message"] = "เกิดข้อผิดพลาดในการบันทึกคำถามกรุณาลองใหม่";
+						break;
+					}
+				}else{
+					$picture = "";
+					if($n != ""){
+						$ext = pathinfo($n, PATHINFO_EXTENSION);
+						$picture = "{$game_id}_{$question_no}.{$ext}";
+					}
+
+					if(($post["choice"][$i]!="") || ($n != "")){
+						$save = array("answer"		=>$post["choice"][$i],
+								"picture"		=>$picture,
+								"no"			=>$question_no,
+								"question_id"	=>$question_id,
+								"point"	=>$post["point"][$i]
+						);
+						$this->answer_md->save($save);
+					}
+
+
+				}
+				$i++;
+
+			}
                 // $d["question"]  = $post["question"];
                 // $d["no"]        = $data["question_no"];
                 // $d["game_id"]   = $game_id;
@@ -43,9 +91,17 @@ class GameQuestion extends Auth {
         }
 
 
-        $data["game_id"] = $game_id;
+
 		$content["content"] = $this->load->view("gamequestion/index_tpl",$data,true);
 		$this->load->view("layout_tpl",$content);
+	}
+
+
+	private function validPoint($point){
+		foreach ($point as $p){
+			if ($p > 0) return true;
+		}
+		return false;
 	}
 
 	private function do_upload($game_id ,$filename)
