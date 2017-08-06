@@ -17,21 +17,25 @@ class CreateGame extends Auth {
 	public function index($id="")
 	{
 		$data = array();
-		
+
 		if(!$this->game_md->isOwner($this->mem_id,$id)&&$id>0){
 			echo "ไม่พบเกมส์ที่คุณเลือก";
 			exit;
 		}
 
 		if(($post = $this->input->post()) && $this->login){
-			if($id > 0){
+			$d = array();
+			$d["title"] = $post["title"];
+			$d["timelimit_type"] = $post["timelimit_type"];
+			$d["time_limit"] = $post["time_limit"];
 
-				$d["title"] = $post["title"];
+			if($id > 0){
 
 				if(isset($_FILES['userfile']['name'])&&$_FILES['userfile']['name']!=""){
 					$ext = pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
 					$file_name = uniqid('img_').".".$ext;
 					$d["picture"] = $file_name;
+
 					$this->do_upload($id,$file_name);
 				}
 
@@ -39,7 +43,6 @@ class CreateGame extends Auth {
 				$this->game_md->update($d,$id);
 				redirect("gamequestion/index/$id");
 			}else{
-				$d["title"] = $post["title"];
 				$ext = pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
 				$file_name = uniqid('img_').".".$ext;
 				$d["picture"] = $file_name;
@@ -51,14 +54,14 @@ class CreateGame extends Auth {
 
 		if($id > 0){
 			$data["game"] = $this->game_md->get($id);
-			
-			
+
+
 		}
 		$data["game_id"] = $id;
 		$content["content"] = $this->load->view("creategame/index_tpl",$data,true);
-	
 
-		
+
+
 		$this->load->view("layout_tpl",$content);
 	}
 
@@ -74,8 +77,8 @@ class CreateGame extends Auth {
             if (!file_exists($config['upload_path'])) {
 			    mkdir($config['upload_path'], 0777);
 			    echo "The directory  was successfully created.";
-			   
-			} 
+
+			}
             $this->load->library('upload', $config);
 
             if ( ! $this->upload->do_upload('userfile'))

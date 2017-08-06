@@ -1,5 +1,5 @@
 
-<form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" role="form" method="post" enctype="multipart/form-data" onsubmit="return validateInput();">
 
 
       <div class="activity terques">
@@ -22,8 +22,8 @@
                                                 <div class="col-lg-8">
                                                 <ul class="list-group">
                                                       <li class="list-group-item"><input type="radio" name="timelimit_type" value="nolimit" checked >ไม่จำกัดเวลา</td></li>
-                                                      <li class="list-group-item"><input type="radio" name="timelimit_type" value="gamelimit">เวลารวมทุกข้อภายใน</li>
                                                       <li class="list-group-item"><input type="radio" name="timelimit_type" value="questlimit">เวลาแต่ละข้อภายใน</li>
+                                                      <li class="list-group-item"><input type="radio" name="timelimit_type" value="gamelimit">เวลารวมทุกข้อภายใน</li>
                                                 </ul>
                                                 </div>
                                                 <div class="col-lg-4 ">
@@ -70,6 +70,26 @@
 </form>
 
 <script>
+
+      function validateInput(){
+            ckbs = $('input[name="timelimit_type"]:checked').val();
+
+
+            if(ckbs=="gamelimit" || ckbs =="questlimit"){
+                  var sec = $("#time_limit").val();
+                  if(sec <= 0){
+                        $("#mesageModal").html("กรุณากรอกเวลาที่ต้องการจำกัด");
+                        $("#alertModal").modal("show");
+                        $('#alertModal').on('hidden.bs.modal', function () {
+                            $("#time_limit").focus();
+                        })
+
+                        return false;
+                  }
+            }
+            return true;
+      }
+
       $(document).ready(function(){
             $('input[name="timelimit_type"]').click(function(){
                   if($(this).val()=="nolimit"){
