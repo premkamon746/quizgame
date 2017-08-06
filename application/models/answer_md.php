@@ -10,6 +10,10 @@ class Answer_Md extends CI_Model { // คลาส Model_template สืบท�
 		return $this->db->get_where($this->table, array("id"=>$id));
 	}
 
+	function getByQuestionId($question_id){
+		return $this->db->get_where($this->table, array("question_id"=>$question_id));
+	}
+
 	function getByMemberID($member_id){
 		return $this->db->get_where($this->table, array("member_id"=>$member_id));
 	}
@@ -25,6 +29,19 @@ class Answer_Md extends CI_Model { // คลาส Model_template สืบท�
 	function checkQuestionNo($game_id){
 		$query = $this->db->get_where($this->table, array("game_id"=>$game_id));
 		return $query->num_rows()+1;
+	}
+
+	function updaeImage($member_id,$game_id,$qno,$no,$pic){
+		$this->load->model("question_md");
+		$query = $this->question_md->getIDByNo($member_id,$game_id,$qno);
+		echo $this->db->last_query();
+		if($query->num_rows() > 0){
+			$qid = $query->row()->id;
+			$this->db->set("update_date","now()",false);
+			$this->db->where(array("member_id"=>$member_id,"question_id"=>$qid, "no"=>$no));
+			$this->db->update($this->table,array("picture"=>$pic));
+			echo $this->db->last_query();
+		}
 	}
 
 

@@ -14,6 +14,10 @@ class Question_Md extends CI_Model { // คลาส Model_template สืบท
 		return $this->db->get_where($this->table, array("member_id"=>$member_id));
 	}
 
+	function getIDByNo($member_id,$game_id,$qno){
+		return  $this->db->get_where("question",array("member_id"=>$member_id,"game_id"=>$game_id,"no"=>$qno));
+	}
+
 
 	function isOwner($member_id,$game_id){
 		$result =  $this->db->get_where($this->table, array("id"=>$game_id,"member_id"=>$member_id));
@@ -47,6 +51,13 @@ class Question_Md extends CI_Model { // คลาส Model_template สืบท
 		$this->db->where(array("id"=>$id));
 		$this->db->update($this->table, $data);
 		return $this->db->insert_id();
+	}
+
+	function updaeImage($member_id,$game_id,$no,$pic){
+		$this->db->set("update_date","now()",false);
+		$this->db->where(array("member_id"=>$member_id,"game_id"=>$game_id,"no"=>$no));
+		$this->db->update($this->table,array("picture"=>$pic));
+		
 	}
 
 

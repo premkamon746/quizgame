@@ -25,7 +25,7 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="<?=base_url()?>assets/js/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
- <script src="<?=base_url()?>assets/bootstrap/js/bootstrap.min.js" crossorigin="anonymous"></script> 
+ <script src="<?=base_url()?>assets/bootstrap/js/bootstrap.min.js" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="<?=base_url()?>assets/css/style.css" crossorigin="anonymous">
 

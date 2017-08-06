@@ -11,21 +11,38 @@ class GameQuestion extends Auth {
 		$this->load->model("answer_md");
 	}
 
-	public function index($game_id)
+	public function index($game_id="", $qest_id="")
 	{
+		if(!$this->game_md->isOwner($this->mem_id,$game_id)&&$game_id>0){
+		    echo "ไม่พบเกมส์ที่คุณเลือก";
+		    return;
+		}
+
 		$data = array();
 		$data["game_id"] = $game_id;
+		$data["question_id"] = $qest_id;
 
 		$data["all_question"] = $this->question_md->getAllQuestion($game_id);
 
-	        if(!$this->game_md->isOwner($this->mem_id,$game_id)&&$game_id>0){
-	            echo "ไม่พบเกมส์ที่คุณเลือก";
-	            return;
-	        }
+		$data["answer"] = [1,2,3,4,5];
 
-        	$question_no = $this->question_md->checkQuestionNo($game_id);
+		$question_no = $this->question_md->checkQuestionNo($game_id);
+
+		if($qest_id > 0){
+			$question = $this->question_md->get($qest_id);
+			$data["question"] = $question->row();
+			$answer =  $this->answer_md->getByQuestionId($qest_id);
+			if($answer->num_rows() > 0){
+				$data["answer"] = $answer->result();
+			}
+			$question_no = $data["question"]->no;
+		}
+
+
+
+
 		$data["question_no"] = $question_no;
-	        if($post = $this->input->post()){
+	        if($post = $this->input->post() ){
 
 
 			if(!$this->validPoint($post["point"])){
@@ -38,57 +55,56 @@ class GameQuestion extends Auth {
 			  $i = 0;
 			  $question_id = 0;
 
-			foreach($_FILES['userfile']['name'] as $n){
-				$save = array();
-				if($i==0){
+			if($qest_id == ""){
+				foreach($_FILES['userfile']['name'] as $n){
+					$save = array();
 					$picture = "";
-					if($n != ""){
-						$ext = pathinfo($n, PATHINFO_EXTENSION);
-						$picture = "{$game_id}_{$question_no}.{$ext}";
-					}
-					$save = array("question"=>$post["choice"][$i],
-							"picture"	=>$picture,
-							"no"		=>$question_no,
-							"game_id"	=>$game_id
-						);
 
-					$question_id = $this->question_md->save($save);
-					if($question_id <=0){
-						$data["message"] = "เกิดข้อผิดพลาดในการบันทึกคำถามกรุณาลองใหม่";
-						break;
-					}
-				}else{
+
+					if($i==0){ //save question
+						if($n != ""){
+							$ext = pathinfo($n, PATHINFO_EXTENSION);
+							$picture = "{$game_id}_{$question_no}.{$ext}";
+						}
+						$save = array("question"=>$post["choice"][$i],
+								"picture"	=>$picture,
+								"no"		=>$question_no,
+								"game_id"	=>$game_id
+							);
+
+						$question_id = $this->question_md->save($save);
+						if($question_id <=0){
+							$data["message"] = "เกิดข้อผิดพลาดในการบันทึกคำถามกรุณาลองใหม่";
+							break;
+						}
+					}else{ //save answer
+						if($n != ""){
+							$ext = pathinfo($n, PATHINFO_EXTENSION);
+							$picture = "{$game_id}_{$question_no}{$i}in.{$ext}";
+						}
+						if(($post["choice"][$i]!="") || ($n != "")){
+							$save = array("answer"		=>$post["choice"][$i],
+									"picture"		=>$picture,
+									"no"			=>$i,
+									"question_id"	=>$question_id,
+									"point"	=>$post["point"][$i]
+							);
+							$this->answer_md->save($save);
+						}
+					} // end if check quesion
 					$picture = "";
-					if($n != ""){
-						$ext = pathinfo($n, PATHINFO_EXTENSION);
-						$picture = "{$game_id}_{$question_no}.{$ext}";
-					}
-
-					if(($post["choice"][$i]!="") || ($n != "")){
-						$save = array("answer"		=>$post["choice"][$i],
-								"picture"		=>$picture,
-								"no"			=>$question_no,
-								"question_id"	=>$question_id,
-								"point"	=>$post["point"][$i]
-						);
-						$this->answer_md->save($save);
-					}
-
-
+					$i++;
 				}
-				$i++;
-
+			}else{
+				$iq = $qest_id+1;
+				$qcount = $this->question_md->get($iq);
+				if($qcount->num_rows() > 0){
+					redirect("gamequestion/index/$game_id/{$iq}");
+				}else{
+					redirect("gamequestion/index/$game_id");
+				}
 			}
-                // $d["question"]  = $post["question"];
-                // $d["no"]        = $data["question_no"];
-                // $d["game_id"]   = $game_id;
-                // $this->question_md->save($d);
-                // if(isset($post["next"])){
-                //
-                // }else if(isset($post["finish"])){
-								//
-                // }
-        }
+        }//if post
 
 
 
