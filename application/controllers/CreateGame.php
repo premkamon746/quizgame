@@ -26,6 +26,7 @@ class CreateGame extends Auth {
 		if(($post = $this->input->post()) && $this->login){
 			$d = array();
 			$d["title"] = $post["title"];
+			$d["detail"] = $post["detail"];
 			$d["timelimit_type"] = $post["timelimit_type"];
 			$d["time_limit"] = $post["time_limit"];
 

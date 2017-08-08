@@ -1,13 +1,22 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
- 
+
 class Game_Md extends CI_Model { // คลาส Model_template สืบทอดคุณสมบัติของ CI_Model
-	
+
 	private $table = "game";
-	
+
 
 	function get($id){
 		return $this->db->get_where($this->table, array("id"=>$id));
+	}
+
+      function getAllPublic(){
+            $this->db->order_by('create_date','desc');
+		return $this->db->get_where($this->table, array("status"=>"public"));
+	}
+
+	function getOnePublic($id){
+		return $this->db->get_where($this->table, array("id"=>$id, "status"=>"public"));
 	}
 
 	function getByMemberID($member_id){
@@ -40,5 +49,5 @@ class Game_Md extends CI_Model { // คลาส Model_template สืบทอ�
 		return $this->db->insert_id();
 	}
 
-	
+
 }

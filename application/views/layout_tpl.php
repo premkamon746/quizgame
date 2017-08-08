@@ -35,13 +35,27 @@
     <nav class="navbar navbar-default ">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">WebSiteName</a>
+          <a class="navbar-brand" href="#">Kapom.me</a>
         </div>
         <ul class="nav navbar-nav ">
+             <li >
+              <a href="<?=site_url("home"); ?>">
+                <div class="btn-sm">
+                   หน้าแรก
+                </div>
+              </a>
+            </li>
           <li >
             <a href="<?=site_url("mygame"); ?>">
               <div class="btn-sm">
-                 My Games
+                 เกมของฉัน
+              </div>
+            </a>
+          </li>
+          <li >
+            <a href="<?=site_url("creategame"); ?>">
+              <div class="btn-sm">
+                  สร้างเกม
               </div>
             </a>
           </li>
@@ -83,9 +97,13 @@
     </nav>
 
         <section id="container" >
-            <section class="wrapper"  style="max-width:800px; margin:0 auto; text-align: center;">
+            <section class="wrapper"  style="max-width:800px; margin:0 auto; text-align: center;" >
 
-                <?php if(!$this->login && $this->session->userdata("login")!="login" ) : ?>
+                <?php if(isset($bef_login)) { ?>
+                        <?=$bef_login ?>
+                <?php } ?>
+
+                <?php if(isset($this->login) && !$this->login && $this->session->userdata("login")!="login" ) : ?>
 
                       <br/><br/><br/>
                       <a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a>

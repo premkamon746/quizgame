@@ -12,7 +12,11 @@
 
                                           <input type="text" class="form-control" id="title" name="title" placeholder="กรอกชื่อเกม เช่น รูปภาพดาราตอนเด็ก คุณรู้หรือไม่" maxlength="2000"
                                           value="<?=(isset($game)&&$game->num_rows() > 0)?$game->row()->title:''?>" required>
-                                          <p class="help-block">กรอกชื่อเกม เช่น รูปภาพดาราตอนเด็ก คุณรู้หรือไม</p>
+                                          <p class="help-block">กรอกชื่อเกม เช่น รูปภาพดาราตอนเด็ก คุณรู้หรือไม่</p>
+
+
+                                          <textarea class="form-control" id="question" name="detail" rows="5" placeholder="คำอธิบายเกมส์หรือคำเชิญชวนให้มาเล่นเกม" ><?=(isset($game)&&$game->num_rows() > 0)?$game->row()->detail:''?></textarea>
+                                          <p class="help-block">คำอธิบายเกมส์หรือคำเชิญชวนให้มาเล่นเกม </p>
 
                                           <input type="file" class="form-control" id="title" name="userfile" placeholder="ชื่อเกม"
                                           maxlength="2000"  <?=(isset($game)&&$game->num_rows() > 0)?'':'required'?> >
@@ -91,6 +95,17 @@
       }
 
       $(document).ready(function(){
+
+            <?php if(isset($game)&&$game->num_rows() > 0) {
+                  $tl = $game->row()->timelimit_type;
+                  echo "$('input[value=\"$tl\"]').prop('checked','checked');";
+                  if($tl!="nolimit"){
+                        echo "$('#time_limit').show();";
+                  }
+
+            ?>
+
+            <?php }?>
             $('input[name="timelimit_type"]').click(function(){
                   if($(this).val()=="nolimit"){
                         $("#time_limit").hide();
