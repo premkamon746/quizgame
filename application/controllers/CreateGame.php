@@ -95,4 +95,39 @@ class CreateGame extends Auth {
                     //$this->load->view('upload_success', $data);
             }
     }
+
+    public function finish($id){
+    	$data = array();
+
+    	if($post = $this->input->post()){
+    		
+
+    		if(isset($post["public"]))
+    		{
+    		
+    			$this->game_md->setPublic($id);
+    		}elseif (isset($post["test"])){
+	    		
+	    	}elseif (isset($post["back"])){
+	    		
+	    	}
+    	}
+
+    	$query = $this->game_md->get($id);
+    	if($query->num_rows() > 0 ){
+    		$data["game"] = $query->row();
+    	}
+
+    	$content["content"] = $this->load->view("creategame/finish_tpl",$data,true);
+		$this->load->view("layout_tpl",$content);
+    }
+
+    public function public($id){
+    	$data = array();
+    	if ($this->game_md->seetPublic($id)){
+    		redirect("");
+    	}
+    	$content["content"] = $this->load->view("creategame/finish_tpl",$data,true);
+		$this->load->view("layout_tpl",$content);
+    }
 }

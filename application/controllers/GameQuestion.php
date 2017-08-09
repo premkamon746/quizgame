@@ -101,7 +101,12 @@ class GameQuestion extends Auth {
 				if($qcount->num_rows() > 0){
 					redirect("gamequestion/index/$game_id/{$iq}");
 				}else{
-					redirect("gamequestion/index/$game_id");
+					if(isset($post["finish"])){
+						redirect("creategame/finish/$game_id");
+					}elseif(isset($post["next"])){
+						redirect("gamequestion/index/$game_id");
+					}
+					
 				}
 			}
         }//if post

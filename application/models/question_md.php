@@ -7,7 +7,18 @@ class Question_Md extends CI_Model { // คลาส Model_template สืบท
 
 
 	function get($id){
-		return $this->db->get_where($this->table, array("id"=>$id));
+		$query = $this->db->get_where($this->table, array("id"=>$id));
+		return $query;
+	}
+
+	function getByGameID($game_id){
+		$query = $this->db->get_where($this->table, array("game_id"=>$game_id));
+		return $query;
+	}
+
+	function getByGameIDNO($game_id,$no){
+		$query = $this->db->get_where($this->table, array("game_id"=>$game_id,"no"=>$no));
+		return $query;
 	}
 
 	function getByMemberID($member_id){

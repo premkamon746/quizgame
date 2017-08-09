@@ -31,6 +31,13 @@ class Game_Md extends CI_Model { // คลาส Model_template สืบทอ�
 		return false;
 	}
 
+	function setPublic($id){
+		$this->db->where(array("id"=>$id));
+		$query =  $this->db->update($this->table, array("status"=>"public"));
+
+		return $query;
+	}
+
 
 
 

@@ -18,7 +18,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `answer`
 -- ----------------------------
-DROP TABLE IF EXISTS `answer`;
+
 CREATE TABLE `answer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT NULL,
@@ -42,7 +42,7 @@ INSERT INTO `answer` VALUES ('62', '38', '1', 'as', '1', '19_31.jpg', '2017-08-0
 -- ----------------------------
 -- Table structure for `game`
 -- ----------------------------
-DROP TABLE IF EXISTS `game`;
+
 CREATE TABLE `game` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `member_id` int(11) NOT NULL,
@@ -69,7 +69,7 @@ INSERT INTO `game` VALUES ('20', '2', 'test', '', 'img_5976e3a0a5ac2.jpg', 'crea
 -- ----------------------------
 -- Table structure for `member`
 -- ----------------------------
-DROP TABLE IF EXISTS `member`;
+
 CREATE TABLE `member` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(500) COLLATE utf8_croatian_ci NOT NULL,
@@ -90,7 +90,7 @@ INSERT INTO `member` VALUES ('2', 'Withther Aryof', 'noonoonnaja@gmail.com', '14
 -- ----------------------------
 -- Table structure for `question`
 -- ----------------------------
-DROP TABLE IF EXISTS `question`;
+
 CREATE TABLE `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `game_id` int(11) NOT NULL,
