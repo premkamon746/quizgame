@@ -96,6 +96,8 @@ class GameQuestion extends Auth {
 					$i++;
 				}
 			}else{
+
+				$this->updateGame();
 				$iq = $qest_id+1;
 				$qcount = $this->question_md->get($iq);
 				if($qcount->num_rows() > 0){
@@ -106,7 +108,7 @@ class GameQuestion extends Auth {
 					}elseif(isset($post["next"])){
 						redirect("gamequestion/index/$game_id");
 					}
-					
+
 				}
 			}
         }//if post
@@ -116,6 +118,48 @@ class GameQuestion extends Auth {
 		$content["content"] = $this->load->view("gamequestion/index_tpl",$data,true);
 		$this->load->view("layout_tpl",$content);
 	}
+
+	// function updateGame($post){
+	// 	foreach($_FILES['userfile']['name'] as $n){
+	// 		$save = array();
+	// 		$picture = "";
+	//
+	//
+	// 		if($i==0){ //save question
+	// 			if($n != ""){
+	// 				$ext = pathinfo($n, PATHINFO_EXTENSION);
+	// 				$picture = "{$game_id}_{$question_no}.{$ext}";
+	// 			}
+	// 			$save = array("question"=>$post["choice"][$i],
+	// 					"picture"	=>$picture,
+	// 					"no"		=>$question_no,
+	// 					"game_id"	=>$game_id
+	// 				);
+	//
+	// 			$question_id = $this->question_md->save($save);
+	// 			if($question_id <=0){
+	// 				$data["message"] = "เกิดข้อผิดพลาดในการบันทึกคำถามกรุณาลองใหม่";
+	// 				break;
+	// 			}
+	// 		}else{ //save answer
+	// 			if($n != ""){
+	// 				$ext = pathinfo($n, PATHINFO_EXTENSION);
+	// 				$picture = "{$game_id}_{$question_no}{$i}in.{$ext}";
+	// 			}
+	// 			if(($post["choice"][$i]!="") || ($n != "")){
+	// 				$save = array("answer"		=>$post["choice"][$i],
+	// 						"picture"		=>$picture,
+	// 						"no"			=>$i,
+	// 						"question_id"	=>$question_id,
+	// 						"point"	=>$post["point"][$i]
+	// 				);
+	// 				$this->answer_md->save($save);
+	// 			}
+	// 		} // end if check quesion
+	// 		$picture = "";
+	// 		$i++;
+	// 	}
+	// }
 
 
 	private function validPoint($point){

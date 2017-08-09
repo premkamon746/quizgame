@@ -33,7 +33,7 @@
 	                                </ul>
 	                            </div>
 	                            <div class="col-lg-4">
-
+                                        <div id="timedown" style="font-size:40px"><?=($timetype == "questlimit")? $time:"" ?><div>
 	                            </div>
 	                        </div>
                 		</div>
@@ -48,4 +48,18 @@
   			$("#questionForm").submit();
   		});
   	});
+
+      <?php if($timetype == "questlimit") : ?>
+      var n = <?=$time?>;
+      var tm = setInterval(countDown,1000);
+      function countDown(){
+         n--;
+         if(n == 0){
+            clearInterval(tm);
+            $("#questionForm").submit();
+         }
+         $("#timedown").html(n);
+      }
+
+      <?php endif; ?>
   </script>

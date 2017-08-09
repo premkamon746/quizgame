@@ -15,7 +15,17 @@ class Post extends Auth {
 	{
 		$data = array();
 		$data["game_id"] = $id;
-		$data["result"] = $this->game_md->getOnePublic($id);
+		$query = $this->game_md->getOnePublic($id);
+
+		if($query->num_rows() > 0){
+			$res = $query->row();
+			$data["res"] = $res;
+			$this->session->set_userdata("time_limit",$res->time_limit);
+			$this->session->set_userdata("timelimit_type",$res->timelimit_type);
+		}
+		//echo $this->session->userdata("timelimit_type");
+
+
 		$content["bef_login"] = $this->load->view("game/showdetail_tpl",$data,true);
 		$content["content"] = $this->load->view("game/index_tpl",$data,true);
 		$this->load->view("layout_tpl",$content);
@@ -35,6 +45,12 @@ class Post extends Auth {
 			$data["qest"] = $query->row();
 			$data["ans"] = $this->answer_md->getByQuestionId($data["qest"]->id);
 		}
+
+		$time_limit = $this->session->userdata("time_limit");
+		$timelimit_type = $this->session->userdata("timelimit_type");
+		
+		$data["time"] = $time_limit;
+		$data["timetype"] = $timelimit_type;
 
 		$data["no_next"] = $no+1;
 		$data["game_id"] = $game_id;
