@@ -3,8 +3,16 @@
 <div class="activity">
 
                   <div class="panel">
-                  		<div class="panel-heading"><?=$qest->question ?></div>
+                  		<div class="panel-heading">
+                                    <?php
+                                          if($qest->picture!=""){
+                                                echo "<img src='".base_url()."uploads/$game_id/".$qest->picture."' width='200' />";
+                                          }
+                                    ?>
+                                    <?=$qest->question ?>
+                              </div>
                         <div class="panel-body">
+
                         	<div class="row">
 	                      		<div class="col-lg-8">
 	                             	<ul class="list-group">
@@ -14,7 +22,7 @@
 	                                      			<?=$a->no?>.
 	                                      			<?=$a->answer?>
 	                                      			<div style="margin-left:20px;">
-		                                      			<?php 
+		                                      			<?php
 		                                      				if($a->picture!=""){
 		                                      					echo "<img src='".base_url()."uploads/$game_id/".$a->picture."' width='200' />";
 		                                      				}
@@ -22,15 +30,15 @@
 		                                      		</div>
 	                                      		</li>
 	                                  		<?php endforeach?>
-	                                </ul>  
+	                                </ul>
 	                            </div>
 	                            <div class="col-lg-4">
-	                             	
+
 	                            </div>
 	                        </div>
                 		</div>
                   </div>
-          
+
       </div>
   </form>
 
