@@ -13,7 +13,8 @@ class GameQuestion extends Auth {
 
 	public function index($game_id="", $qest_id="")
 	{
-		if(!$this->game_md->isOwner($this->mem_id,$game_id)&&$game_id>0){
+		if ($this->mem_id == ""){
+		}elseif(!$this->game_md->isOwner($this->mem_id,$game_id)&&$game_id>0){
 		    echo "ไม่พบเกมส์ที่คุณเลือก";
 		    return;
 		}
@@ -80,7 +81,7 @@ class GameQuestion extends Auth {
 					}else{ //save answer
 						if($n != ""){
 							$ext = pathinfo($n, PATHINFO_EXTENSION);
-							$picture = "{$game_id}_{$question_no}{$i}in.{$ext}";
+							$picture = "{$game_id}_{$question_no}_{$i}.{$ext}";
 						}
 						if(($post["choice"][$i]!="") || ($n != "")){
 							$save = array("answer"		=>$post["choice"][$i],
@@ -97,7 +98,7 @@ class GameQuestion extends Auth {
 				}
 			}else{
 
-				$this->updateGame();
+				//$this->updateGame();
 				$iq = $qest_id+1;
 				$qcount = $this->question_md->get($iq);
 				if($qcount->num_rows() > 0){

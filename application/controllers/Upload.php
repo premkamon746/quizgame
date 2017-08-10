@@ -18,6 +18,12 @@ public function __construct(){
 			echo "ไม่พบเกมส์ที่คุณเลือก";
 			exit;
 		}
+
+
+		if($no != ""){
+			$no = "_".$no;
+		}
+
 		$ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
 		$file_name = "{$game_id}_{$question_no}{$no}.$ext";
 		$upload = $this->do_upload($game_id,$file_name);

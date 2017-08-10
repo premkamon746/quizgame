@@ -105,11 +105,13 @@ class CreateGame extends Auth {
     		if(isset($post["public"]))
     		{
     		
-    			$this->game_md->setPublic($id);
+    			$this->game_md->setPublic($id,"public");
     		}elseif (isset($post["test"])){
 	    		
 	    	}elseif (isset($post["back"])){
 	    		
+	    	}elseif (isset($post["unpublic"])){
+	    		$this->game_md->setStatus($id,"unpublic");
 	    	}
     	}
 
@@ -122,12 +124,12 @@ class CreateGame extends Auth {
 		$this->load->view("layout_tpl",$content);
     }
 
-    public function public($id){
-    	$data = array();
-    	if ($this->game_md->seetPublic($id)){
-    		redirect("");
-    	}
-    	$content["content"] = $this->load->view("creategame/finish_tpl",$data,true);
-		$this->load->view("layout_tpl",$content);
-    }
+  //   public function public($id){
+  //   	$data = array();
+  //   	if ($this->game_md->seetPublic($id)){
+  //   		redirect("");
+  //   	}
+  //   	$content["content"] = $this->load->view("creategame/finish_tpl",$data,true);
+		// $this->load->view("layout_tpl",$content);
+  //   }
 }
