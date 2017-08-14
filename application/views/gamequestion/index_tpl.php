@@ -19,7 +19,7 @@
                                     </a>
                               <? endforeach?>
                                     <a href="<?=site_url("gamequestion/index/$game_id")?>">
-                                          <button type="button" class="btn btn-circle btn-lg"><?=$all_question->num_rows()+1?></button>
+                                          <button type="button" class="btn btn-circle btn-lg"><span class="glyphicon glyphicon-plus"></span></button>
                                     </a>
 
 
@@ -30,23 +30,24 @@
 
                    <?php require_once("qst_tpl.php");?>
                    <?php require("ans_tpl.php");?>
+                   <div id="myDiv"></div>
                   <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-10">
-                                <button type="button" class="btn btn-primary add_button"><i class="icon-plus-sign"></i> เพิ่มคำตอบ</button>
+                                <a href="<?=site_url("gamequestion/index/$game_id/$question_id?r=$r")?>" class="btn btn-primary add_button">
+                                      <i class="icon-plus-sign"></i> เพิ่มคำตอบ
+                                </a>
                             </div>
                   </div>
                   <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
-                            <a href="<?=site_url("creategame/index/$game_id")?>"><button type="button" class="btn btn-danger">&lt;&lt; ย้อนกลับ</button></a>
-                            <button type="submit" name="next" class="btn btn-danger">ต่อไป &gt;&gt;</button>
-                            <button type="submit" name="finish" class="btn btn-success">เสร็จสิ้น &gt;&gt;</button>
+                            <a href="<?=site_url("creategame/index/$game_id")?>"><button type="button" class="btn btn-danger"> หน้าสร้างเกมส์</button></a>
+                            <button type="submit" name="next" class="btn btn-danger">บันทึก</button>
+                            <a href="<?=site_url("creategame/result/$game_id")?>"  class="btn btn-success">สร้างผลการเล่นเกม</a>
                         </div>
                   </div>
           </form>
       </div>
 </div>
-
-
 
 
 
@@ -61,6 +62,13 @@ function removeImage(obj){
 
   $(document).ready(function(){
 
+        <?php //when add more choice?>
+        <?php if(isset($r)) : ?>
+              $('html, body').animate({
+                    scrollTop: $("#myDiv").offset().top
+              }, 100);
+        <?php endif;?>
+
         $(".selectImage").on("click",function() {
             $(this).closest('.upload_photo').find("input[type='file']").click();
         });
@@ -71,13 +79,13 @@ function removeImage(obj){
 
     $('.add_button').click(function(){
 
-        var count_choice = $('.choice_no').length
+        //var count_choice = $('.choice_no').length
 
-        if(count_choice <20){
-          var add_tag = $('.choice_no').html();
-          add_tag ='<div class="choice_no" style="margin-left:120px;">'+add_tag+'</div>';
-          $(".contain_choice").append(add_tag);
-        }
+
+          var add_tag = $("#hiddenAnsForm").html();;
+
+          $("#contain_choice").append(add_tag);
+
 
     });
 

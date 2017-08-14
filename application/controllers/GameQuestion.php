@@ -20,14 +20,33 @@ class GameQuestion extends Auth {
 		}
 
 		$data = array();
+		//answer row
+
+
+
+
 		$data["game_id"] = $game_id;
 		$data["question_id"] = $qest_id;
 
 		$data["all_question"] = $this->question_md->getAllQuestion($game_id);
 
-		$data["answer"] = [1,2,3,4,5];
+
+		//add more choice logic
+		if($this->input->get("r")+$data["all_question"]->num_rows() <=20){
+			if($this->input->get("r")){
+				$data["r"] =$this->input->get("r")+1;
+			}else{
+				$data["r"] =2;
+			}
+		}else{
+			$data["r"] =20;
+			$data["message"] = "เพิ่มคำตอบสูงสุดได้ 20 คำตอบ";
+		}
+
+		//$data["answer"] = [1,2,3,4,5];
 
 		$question_no = $this->question_md->checkQuestionNo($game_id);
+
 
 		if($qest_id > 0){
 			$question = $this->question_md->get($qest_id);
@@ -41,10 +60,9 @@ class GameQuestion extends Auth {
 
 
 
-
 		$data["question_no"] = $question_no;
 	        if($post = $this->input->post() ){
-
+			  print_r($post);
 
 			if(!$this->validPoint($post["point"])){
 			      $data["message"] = "กรุณาให้คะแนนข้อที่ตอบถูกอย่างน้อย 1 ข้อ";
@@ -56,7 +74,8 @@ class GameQuestion extends Auth {
 			  $i = 0;
 			  $question_id = 0;
 
-			if($qest_id == ""){
+
+
 				foreach($_FILES['userfile']['name'] as $n){
 					$save = array();
 					$picture = "";
@@ -73,7 +92,15 @@ class GameQuestion extends Auth {
 								"game_id"	=>$game_id
 							);
 
-						$question_id = $this->question_md->save($save);
+						if($qest_id > 0){
+							unset($save["picture"]);
+							$this->question_md->update($save,$qest_id);
+							$question_id = $qest_id;
+						}else{
+							$question_id = $this->question_md->save($save);
+						}
+						$res = $this->answer_md->deleteByQstID($question_id);
+
 						if($question_id <=0){
 							$data["message"] = "เกิดข้อผิดพลาดในการบันทึกคำถามกรุณาลองใหม่";
 							break;
@@ -88,30 +115,42 @@ class GameQuestion extends Auth {
 									"picture"		=>$picture,
 									"no"			=>$i,
 									"question_id"	=>$question_id,
+									"game_id"	=>$game_id,
 									"point"	=>$post["point"][$i]
 							);
-							$this->answer_md->save($save);
+
+							// if($qest_id > 0){
+							// 	$res = $this->answer_md->deleteByQstID($question_id);
+							// 	if($res){
+							// 		$this->answer_md->save($save);
+							// 	}
+							// }else{
+								$this->answer_md->save($save);
+							//}
+
 						}
 					} // end if check quesion
 					$picture = "";
 					$i++;
 				}
-			}else{
 
-				//$this->updateGame();
-				$iq = $qest_id+1;
-				$qcount = $this->question_md->get($iq);
-				if($qcount->num_rows() > 0){
-					redirect("gamequestion/index/$game_id/{$iq}");
-				}else{
-					if(isset($post["finish"])){
-						redirect("creategame/finish/$game_id");
-					}elseif(isset($post["next"])){
-						redirect("gamequestion/index/$game_id");
-					}
+				redirect("gamequestion/index/{$game_id}/{$question_id}");
 
-				}
-			}
+			//
+			// 	//$this->updateGame();
+			// 	$iq = $qest_id+1;
+			// 	$qcount = $this->question_md->get($iq);
+			// 	if($qcount->num_rows() > 0){
+			// 		redirect("gamequestion/index/$game_id/{$iq}");
+			// 	}else{
+			// 		if(isset($post["finish"])){
+			// 			redirect("creategame/finish/$game_id");
+			// 		}elseif(isset($post["next"])){
+			// 			redirect("gamequestion/index/$game_id");
+			// 		}
+			//
+			// 	}
+			// }
         }//if post
 
 

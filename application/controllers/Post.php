@@ -35,25 +35,34 @@ class Post extends Auth {
 		$data = array();
 		$query = $this->question_md->getByGameIDNO($game_id,$no);
 
-		if($post = $this->input->post()){
-			if($query->num_rows() <= 0){
-				redirect("post/finish/$game_id");
-			}
+		// $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
+		// if($pageWasRefreshed ) {
+		//
+		//    redirect("post/game/$game_id");
+		// }
+
+		if($post = $this->input->post())
+		{
+			$point = $this->answer_md->getPlayPoint($post["choice"]);
+
 		}
 
 		if($query->num_rows() > 0){
 			$data["qest"] = $query->row();
 			$data["ans"] = $this->answer_md->getByQuestionId($data["qest"]->id);
+		}else{
+			redirect("post/finish/$game_id");
 		}
 
 		$time_limit = $this->session->userdata("time_limit");
 		$timelimit_type = $this->session->userdata("timelimit_type");
-		
+
 		$data["time"] = $time_limit;
 		$data["timetype"] = $timelimit_type;
 
 		$data["no_next"] = $no+1;
 		$data["game_id"] = $game_id;
+
 		$content["content"] = $this->load->view("game/comment_tpl",$data,true);
 		$this->load->view("layout_tpl",$content);
 	}

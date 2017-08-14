@@ -15,7 +15,22 @@ class Answer_Md extends CI_Model { // คลาส Model_template สืบท�
 	}
 
 	function getByMemberID($member_id){
+
 		return $this->db->get_where($this->table, array("member_id"=>$member_id));
+	}
+
+	function getPlayPoint($aid){
+		$result =  $this->db->get_where($this->table, array("id"=>$aid));
+		//echo $this->db->last_query();
+		if($result->num_rows() > 0){
+			return $result->row()->point;
+		}
+		return 0;
+	}
+
+	function getTotalPoint($game_id){
+		$this->db->select_sum('point');
+		return $this->db->get_where($this->table, array("game_id"=>$game_id));
 	}
 
 
@@ -60,6 +75,10 @@ class Answer_Md extends CI_Model { // คลาส Model_template สืบท�
 		$this->db->where(array("id"=>$id));
 		$this->db->update($this->table, $data);
 		return $this->db->insert_id();
+	}
+
+	function deleteByQstID($qst_id){
+		return $this->db->delete($this->table, array("question_id"=>$qst_id));
 	}
 
 

@@ -57,9 +57,13 @@ class Question_Md extends CI_Model { // คลาส Model_template สืบท
 		return $this->db->insert_id();
 	}
 
-	function update($data,$id){
+	function update($data,$id,$no=""){
+		$where = array("id"=>$id);
+		if($no !=""){
+			$where["no"] = $no;
+		}
 		$this->db->set("update_date","now()",false);
-		$this->db->where(array("id"=>$id));
+		$this->db->where($where);
 		$this->db->update($this->table, $data);
 		return $this->db->insert_id();
 	}
@@ -68,7 +72,7 @@ class Question_Md extends CI_Model { // คลาส Model_template สืบท
 		$this->db->set("update_date","now()",false);
 		$this->db->where(array("member_id"=>$member_id,"game_id"=>$game_id,"no"=>$no));
 		$this->db->update($this->table,array("picture"=>$pic));
-		
+
 	}
 
 
