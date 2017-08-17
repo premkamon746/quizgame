@@ -98,20 +98,21 @@
 
         <section id="container" >
             <section class="wrapper"  style="max-width:800px; margin:0 auto; text-align: center;" >
+              <?php if(isset($this->login) && !$this->login && $this->session->userdata("login")!="login" ) : ?>
 
+                    <br/><br/><br/>
+                    <a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a>
+                    ล็อกอินก่อนจ้า
+
+              <?php else :?>
+                <?=$content?>
+              <?php endif; ?>
+              
                 <?php if(isset($bef_login)) { ?>
                         <?=$bef_login ?>
                 <?php } ?>
 
-                <?php if(isset($this->login) && !$this->login && $this->session->userdata("login")!="login" ) : ?>
 
-                      <br/><br/><br/>
-                      <a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a>
-                      ล็อกอินก่อนจ้า
-
-                <?php else :?>
-                  <?=$content?>
-                <?php endif; ?>
             </section>
         </section>
 

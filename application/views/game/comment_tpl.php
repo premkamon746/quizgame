@@ -2,19 +2,22 @@
 
 <div class="activity">
 
-                  <div class="panel">
+                  <div class="panel panel-primary">
                   		<div class="panel-heading">
-                                    <?php
-                                          if($qest->picture!=""){
-                                                echo "<img src='".base_url()."uploads/$game_id/".$qest->picture."' width='200' />";
-                                          }
-                                    ?>
-                                    <?=$qest->question ?>
+                                  <?=$game_title->row()->title;?>
                               </div>
                         <div class="panel-body">
 
                         	<div class="row">
 	                      		<div class="col-lg-8">
+
+                              <?php
+                                    if($qest->picture!=""){
+                                          echo "<img src='".base_url()."uploads/$game_id/".$qest->picture."' width='200' />";
+                                    }
+                              ?>
+                              <?=$no.". ".$qest->question ?>
+                                <br/><br/>
 	                             	<ul class="list-group">
 	                             			<?php foreach($ans->result() as $a) : ?>
 	                                      		<li class="list-group-item">

@@ -4,11 +4,14 @@
 <?php foreach ($answer as $ans) : ?>
       <?php require("ans_block_tpl.php"); ?>
 <?php $i++; ?>
+<?php $count = $r+$i; ?>
 <?php endforeach ?>
+<?php else: ?>
+<?php $count = 5; ?>
 <?php endif?>
 
 <?php $ans = array();?>
-<?php $count = $r+$i; ?>
+
 <?php for ($i;$i < $count; $i++) : ?>
       <?php require("ans_block_tpl.php"); ?>
 <?php endfor ?>

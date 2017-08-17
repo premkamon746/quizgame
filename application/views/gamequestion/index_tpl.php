@@ -15,7 +15,7 @@
                               </div>
                               <? foreach ($all_question->result() as $aq) : ?>
                                     <a href="<?=site_url("gamequestion/index/$game_id/$aq->id")?>">
-                                          <button type="button" class="btn <?=$question_no==$aq->no?"btn-primary":"btn-success" ?> btn-circle btn-lg"><?=$aq->no?></button>
+                                          <button type="button" class="btn <?=$question_no==$aq->no?"btn-warning":"btn-success" ?> btn-circle btn-lg"><?=$aq->no?></button>
                                     </a>
                               <? endforeach?>
                                     <a href="<?=site_url("gamequestion/index/$game_id")?>">

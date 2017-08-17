@@ -5,7 +5,8 @@
       <div class="activity terques">
 
             <div class="">
-                  <div class="panel">
+                    <div class="panel panel-primary">
+                    		<div class="panel-heading"><h4>สร้างเกม</h4></div>
                         <div class="panel-body">
                               <div class="row" >
                                     <div class="col-lg-6 col-md-6 col-xs-6">
@@ -20,15 +21,15 @@
 
                                           <input type="file" class="form-control" id="title" name="userfile" placeholder="ชื่อเกม"
                                           maxlength="2000"  <?=(isset($game)&&$game->num_rows() > 0)?'':'required'?> >
-                                          <p class="help-block">อัพโหลดรูปภาพปก เป็น file jpg,png,gif</p>
+                                          <p class="help-block">อัพโหลดรูปภาพปก เป็น file jpg,png,gif ขนาดภาพ กว้าง ยาว ไม่เกิน 1024 px</p>
 
                                           <div class="row">
                                                 <div class="col-lg-8">
-                                                <ul class="list-group">
-                                                      <li class="list-group-item"><input type="radio" name="timelimit_type" value="nolimit" checked >ไม่จำกัดเวลา</td></li>
-                                                      <li class="list-group-item"><input type="radio" name="timelimit_type" value="questlimit">เวลาแต่ละข้อภายใน</li>
-                                                      <li class="list-group-item"><input type="radio" name="timelimit_type" value="gamelimit">เวลารวมทุกข้อภายใน</li>
-                                                </ul>
+                                                  <ul class="list-group">
+                                                        <li class="list-group-item"><input type="radio" name="timelimit_type" value="nolimit" checked >ไม่จำกัดเวลา</td></li>
+                                                        <li class="list-group-item"><input type="radio" name="timelimit_type" value="questlimit">เวลาแต่ละข้อภายใน(วินาที)</li>
+                                                        <!-- <li class="list-group-item"><input type="radio" name="timelimit_type" value="gamelimit">เวลารวมทุกข้อภายใน</li> -->
+                                                  </ul>
                                                 </div>
                                                 <div class="col-lg-4 ">
                                                       <input type="text" class="form-control" id="time_limit" name="time_limit"
@@ -68,7 +69,13 @@
 
       <div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">
-                <button type="submit" class="btn btn-danger">บันทึก</button>
+                <button type="submit" class="btn btn-danger">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  บันทึก
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                <?php if($game_id): ?>
+                  <a href="<?=site_url("gamequestion/index/$game_id");?>" class="btn btn-info">สร้างคำถาม</a>
+                <?php endif ?>
             </div>
       </div>
 </form>
@@ -95,6 +102,10 @@
       }
 
       $(document).ready(function(){
+
+            <?php if(isset($message)&&$message!="") : ?>
+              $('#alertModal').modal('show');
+            <?php endif ?>
 
             <?php if(isset($game)&&$game->num_rows() > 0) {
                   $tl = $game->row()->timelimit_type;

@@ -40,7 +40,7 @@ class CreateGame extends Auth {
 					$file_name = uniqid('img_').".".$ext;
 					$d["picture"] = $file_name;
 
-					$this->do_upload($id,$file_name);
+					$data["message"] = $this->do_upload($id,$file_name);
 				}
 
 
@@ -50,7 +50,7 @@ class CreateGame extends Auth {
 				$file_name = uniqid('img_').".".$ext;
 				$d["picture"] = $file_name;
 				$id = $this->game_md->save($d);
-				$this->do_upload($id,$file_name);
+				$data["message"] = $this->do_upload($id,$file_name);
 
 
 			}
@@ -58,12 +58,12 @@ class CreateGame extends Auth {
 			//when the game have question
 			$query = $this->question_md->getByGameIDNO($id,1);
 
-			if($query->num_rows() > 0){
-				$qid = $query->row()->id;
-				redirect("gamequestion/index/$id/$qid");
-			}else{
-				redirect("gamequestion/index/$id");
-			}
+				if($query->num_rows() > 0){
+					$qid = $query->row()->id;
+					redirect("gamequestion/index/$id/$qid");
+				}else{
+					redirect("gamequestion/index/$id");
+				}
 		}
 
 		if($id > 0){
@@ -86,27 +86,30 @@ class CreateGame extends Auth {
             $config['allowed_types']        = 'gif|jpg|png';
             $config['max_size']             = 1024;
             $config['max_width']            = 1024;
-            $config['max_height']           = 768;
+            $config['max_height']           = 1024;
 
             if (!file_exists($config['upload_path'])) {
-			    mkdir($config['upload_path'], 0777);
-			    echo "The directory  was successfully created.";
+						    mkdir($config['upload_path'], 0777);
+						    echo "The directory  was successfully created.";
 
-			}
+						}
+						$msg = "";
             $this->load->library('upload', $config);
 
             if ( ! $this->upload->do_upload('userfile'))
             {
-                    $error = array('error' => $this->upload->display_errors());
-                    //echo $this->upload->display_errors();
+                    //$error = array('error' => $this->upload->display_errors());
+                    $msg =  $this->upload->display_errors();
                     //$this->load->view('upload_form', $error);
             }
             else
             {
-                    $data = array('upload_data' => $this->upload->data());
-                    //print_r( $this->upload->data());
+                    //$data = array('upload_data' => $this->upload->data());
+                    $msg =  $this->upload->data() ;
                     //$this->load->view('upload_success', $data);
             }
+
+						return $msg;
     }
 
     public function finish($game_id){

@@ -10,6 +10,12 @@ class Result_Md extends CI_Model { // คลาส Model_template สืบท�
 		return $this->db->get_where($this->table, array("id"=>$id));
 	}
 
+
+	function getGameResultByPoint($point){
+
+		return $this->db->get_where($this->table, array("start_score <= "=>$point,"start_score >= "=>$point));
+	}
+
 	function getByGameId($game_id){
 		$this->db->order_by("id");
 		return $this->db->get_where($this->table, array("game_id"=>$game_id));

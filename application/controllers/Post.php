@@ -9,6 +9,8 @@ class Post extends Auth {
 		$this->load->model("game_md");
 		$this->load->model("question_md");
 		$this->load->model("answer_md");
+		$this->load->model("result_md");
+		$this->load->model("play_result_md");
 	}
 
 	public function game($id)
@@ -45,6 +47,17 @@ class Post extends Auth {
 		{
 			$point = $this->answer_md->getPlayPoint($post["choice"]);
 
+			if(	$this->session->flashdata('point') )
+			{
+
+				$curent_point = $this->session->flashdata('point');
+				$sumpoint = $curent_point+$point;
+				$this->session->set_flashdata('point',$sumpoint);
+				//echo "next record : ".$curent_point;
+			}else{
+				//echo "start record : ".$point;
+				$this->session->set_flashdata('point',$point);
+			}
 		}
 
 		if($query->num_rows() > 0){
@@ -61,16 +74,36 @@ class Post extends Auth {
 		$data["timetype"] = $timelimit_type;
 
 		$data["no_next"] = $no+1;
+		$data["no"] = $no;
 		$data["game_id"] = $game_id;
+
+		$data["game_title"] = $this->game_md->get($game_id);
 
 		$content["content"] = $this->load->view("game/comment_tpl",$data,true);
 		$this->load->view("layout_tpl",$content);
 	}
 
-	public function finish($id){
+	public function finish($game_id){
 		$data = array();
-		$data["game_id"] = $id;
-		$data["result"] = $this->game_md->getOnePublic($id);
+		$data["game_id"] = $game_id;
+		$data["result"] = $this->game_md->getOnePublic($game_id);
+
+		//game point
+		$query = $this->answer_md->getTotalPoint($game_id);
+		$data["game_point"] = $query->row()->point;
+
+		//user play this game point
+		$sumpoint = $this->session->flashdata('point');
+
+		
+		$data["total_point"] = $sumpoint;
+		$query = $this->result_md->getGameResultByPoint($sumpoint);
+
+		if($query->num_rows() > 0)
+		{
+				$data["game_res"] = $query->row()->result;
+
+		}
 		$content["content"] = $this->load->view("game/finish_tpl",$data,true);
 		$this->load->view("layout_tpl",$content);
 	}
