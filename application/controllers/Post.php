@@ -46,14 +46,14 @@ class Post extends Auth {
 		if($post = $this->input->post())
 		{
 			$point = $this->answer_md->getPlayPoint($post["choice"]);
-
-			if(	$this->session->flashdata('point') )
+			$sumpoint = 0;
+			if($this->session->flashdata('point') )
 			{
 
 				$curent_point = $this->session->flashdata('point');
 				$sumpoint = $curent_point+$point;
 				$this->session->set_flashdata('point',$sumpoint);
-				//echo "next record : ".$curent_point;
+				//echo "next record : ".$sumpoint;
 			}else{
 				//echo "start record : ".$point;
 				$this->session->set_flashdata('point',$point);
@@ -64,6 +64,18 @@ class Post extends Auth {
 			$data["qest"] = $query->row();
 			$data["ans"] = $this->answer_md->getByQuestionId($data["qest"]->id);
 		}else{
+
+			$query = $this->result_md->getGameResultByPoint($sumpoint);
+			$d = array();
+			$d["score"] = $sumpoint;
+			if($query->num_rows() > 0)
+			{
+				$game_res = $query->row()->result;
+				$d["result"] = $game_res;
+			}
+
+			$member_id = $this->session->userdata("member_id");
+			$this->play_result_md->save($game_id, $member_id,$d);
 			redirect("post/finish/$game_id");
 		}
 
@@ -86,8 +98,8 @@ class Post extends Auth {
 	public function finish($game_id){
 		$data = array();
 		$data["game_id"] = $game_id;
-		$data["result"] = $this->game_md->getOnePublic($game_id);
-
+		$data["gameinfo"] = $this->game_md->getOnePublic($game_id);
+		$member_id = $this->session->userdata("member_id");
 		//game point
 		$query = $this->answer_md->getTotalPoint($game_id);
 		$data["game_point"] = $query->row()->point;
@@ -95,15 +107,15 @@ class Post extends Auth {
 		//user play this game point
 		$sumpoint = $this->session->flashdata('point');
 
-		
-		$data["total_point"] = $sumpoint;
-		$query = $this->result_md->getGameResultByPoint($sumpoint);
-
+		$query = $this->play_result_md->get($game_id, $member_id);
 		if($query->num_rows() > 0)
 		{
-				$data["game_res"] = $query->row()->result;
 
+			$data["game_res"] =  $query->row()->result;
+			$data["total_point"] = $query->row()->score;
 		}
+
+
 		$content["content"] = $this->load->view("game/finish_tpl",$data,true);
 		$this->load->view("layout_tpl",$content);
 	}

@@ -3,16 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Play_Result_Md extends CI_Model { // คลาส Model_template สืบทอดคุณสมบัติของ CI_Model
 
-	private $table = "result";
+	private $table = "play_result";
 
 
-	function get($id){
-		return $this->db->get_where($this->table, array("id"=>$id));
+	function get($game_id,$member_id){
+		return $this->db->get_where($this->table, array("game_id"=>$game_id,"member_id"=>$member_id));
 	}
 
 	function hasGameSave($game_id, $member_id){
 		$query = $this->db->get_where($this->table, array("game_id"=>$game_id,"member_id"=>$member_id));
-		if($query->result() > 0){
+		if($query->num_rows() > 0){
 			return true;
 		}
 		return false;
@@ -40,13 +40,15 @@ class Play_Result_Md extends CI_Model { // คลาส Model_template สืบ
 
 		if(!$this->hasGameSave($game_id, $member_id)){
 			$data["member_id"] = $member_id;
+			$data["game_id"] = $game_id;
 			$this->db->set("create_date","now()",false);
 			$this->db->insert($this->table, $data);
 			return $this->db->insert_id();
 		}else{
-			$data["member_id"] = $member_id;
-			$data["game_id"] = $game_id;
-			$this->db->where();
+			$where["member_id"] = $member_id;
+			$where["game_id"] = $game_id;
+			$this->db->where($where);
+
 			$this->db->update($this->table, $data);
 			return $this->db->insert_id();
 		}

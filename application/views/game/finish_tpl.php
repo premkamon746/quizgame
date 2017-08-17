@@ -2,7 +2,7 @@
       <div style="margin:0 auto;width:500px;">
             <H4>คะแนน <?=$total_point?>/<?=$game_point?></H4>
             <H4><?=isset($game_res)?$game_res: ''?></H4>
-            <?php foreach ($result->result() as $r) {?>
+            <?php foreach ($gameinfo->result() as $r) {?>
             <div class="col-md-12">
                   <div>
                   	<a href="<?=site_url("post/game/$r->id")?>">
