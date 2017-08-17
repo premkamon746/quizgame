@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 17, 2017 at 02:14 PM
--- Server version: 10.1.25-MariaDB
--- PHP Version: 7.1.7
+-- Generation Time: Aug 17, 2017 at 06:53 PM
+-- Server version: 10.1.22-MariaDB
+-- PHP Version: 7.1.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -172,8 +172,16 @@ CREATE TABLE `play_result` (
   `member_id` int(11) NOT NULL,
   `game_id` int(11) NOT NULL,
   `score` int(11) NOT NULL,
+  `result` text NOT NULL,
   `create_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `play_result`
+--
+
+INSERT INTO `play_result` (`id`, `member_id`, `game_id`, `score`, `result`, `create_date`) VALUES
+(1, 1, 22, 0, 'โง่ ควายเอ้ย', '2017-08-17 22:27:43');
 
 -- --------------------------------------------------------
 
@@ -223,8 +231,8 @@ CREATE TABLE `result` (
   `start_score` int(11) DEFAULT NULL,
   `end_score` int(11) DEFAULT NULL,
   `result` text,
-  `create_date` varchar(255) DEFAULT NULL,
-  `update_date` varchar(255) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
   `member_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -238,7 +246,7 @@ INSERT INTO `result` (`id`, `game_id`, `start_score`, `end_score`, `result`, `cr
 (14, 21, 4, 5, 'ไถนา', NULL, NULL, 1),
 (15, 21, 6, 7, 'เลี้ยงเสียข้าวสุก', NULL, NULL, 1),
 (16, 22, 0, 1, 'โง่ ควายเอ้ย', NULL, NULL, 1),
-(17, 22, 2, 3, 'เลี้ยงเสียข้าวสุก', NULL, NULL, 1);
+(17, 22, 2, 3, 'โง่ ควายเอ้ย', NULL, NULL, 1);
 
 --
 -- Indexes for dumped tables
@@ -314,7 +322,7 @@ ALTER TABLE `member`
 -- AUTO_INCREMENT for table `play_result`
 --
 ALTER TABLE `play_result`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `question`
 --
