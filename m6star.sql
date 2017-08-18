@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 17, 2017 at 06:53 PM
--- Server version: 10.1.22-MariaDB
--- PHP Version: 7.1.4
+-- Generation Time: Aug 18, 2017 at 12:33 PM
+-- Server version: 10.1.25-MariaDB
+-- PHP Version: 7.1.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -134,7 +134,7 @@ INSERT INTO `game` (`id`, `member_id`, `title`, `detail`, `picture`, `status`, `
 (18, 1, 'sdf', '', 'img_5975b3dd0f301.jpg', 'active', '2017-07-24 15:46:21', '2017-07-24 15:42:29', NULL, NULL, NULL, NULL),
 (19, 1, 'ทดสอบ', 'testasdfasdfcvaxcasdsdfsdf', 'img_59872ea2eddbd.jpg', 'unpublic', '2017-08-13 22:20:11', '2017-07-24 17:30:49', NULL, 10, 'questlimit', NULL),
 (20, 2, 'test', '', 'img_5976e3a0a5ac2.jpg', 'create', '2017-07-25 13:22:24', '2017-07-25 13:14:58', NULL, NULL, NULL, NULL),
-(21, 1, 'รูปดาราตอนเด็ก ๆ ดูออกหรือเปล่าว่าใครเป็นใคร', 'ลองดูกันซิว่า คุณแยกได้หรือเปล่าว่า ใครเป็นใคร', 'img_598b5435781db.jpg', 'public', '2017-08-17 17:51:41', '2017-08-10 01:28:05', NULL, 10, 'questlimit', NULL),
+(21, 1, 'รูปดาราตอนเด็ก ๆ ดูออกหรือเปล่าว่าใครเป็นใคร', 'ลองดูกันซิว่า คุณแยกได้หรือเปล่าว่า ใครเป็นใคร', 'img_598b5435781db.jpg', 'public', '2017-08-18 13:53:13', '2017-08-10 01:28:05', NULL, 0, 'nolimit', NULL),
 (22, 1, 'ท่อนฮุค เพลงดังในอดีต คนยุค 90 คือเพลงอะไร', 'มาลองดูซิว่า เพลงต่าง ๆ เหล่านี้จะสกิดความทรงจำของคุณได้มากแค่ไหน', 'img_599523538058c.jpg', 'public', '2017-08-17 17:54:14', '2017-08-17 11:45:10', NULL, 20, 'questlimit', NULL);
 
 -- --------------------------------------------------------
@@ -181,7 +181,7 @@ CREATE TABLE `play_result` (
 --
 
 INSERT INTO `play_result` (`id`, `member_id`, `game_id`, `score`, `result`, `create_date`) VALUES
-(1, 1, 22, 0, 'โง่ ควายเอ้ย', '2017-08-17 22:27:43');
+(1, 1, 22, 2, 'ดักดาน', '2017-08-17 22:27:43');
 
 -- --------------------------------------------------------
 
