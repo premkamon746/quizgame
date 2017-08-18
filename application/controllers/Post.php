@@ -37,11 +37,10 @@ class Post extends Auth {
 		$data = array();
 		$query = $this->question_md->getByGameIDNO($game_id,$no);
 
-		// $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
-		// if($pageWasRefreshed ) {
-		//
-		//    redirect("post/game/$game_id");
-		// }
+		$pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
+		if($pageWasRefreshed && !$this->input->post()) {
+		   redirect("post/game/$game_id");
+		}
 
 		if($post = $this->input->post())
 		{
@@ -52,10 +51,10 @@ class Post extends Auth {
 
 				$curent_point = $this->session->flashdata('point');
 				$sumpoint = $curent_point+$point;
-				$this->session->set_flashdata('point',$sumpoint);
-				//echo "next record : ".$sumpoint;
+				$this->session->set_flashdata('point',array($sumpoint));
+				echo "next record : ".$sumpoint;
 			}else{
-				//echo "start record : ".$point;
+				echo "start record : ".$point;
 				$this->session->set_flashdata('point',$point);
 			}
 		}
@@ -110,7 +109,6 @@ class Post extends Auth {
 		$query = $this->play_result_md->get($game_id, $member_id);
 		if($query->num_rows() > 0)
 		{
-
 			$data["game_res"] =  $query->row()->result;
 			$data["total_point"] = $query->row()->score;
 		}

@@ -1,3 +1,4 @@
+
 <form class="form-horizontal" role="form" id="questionForm" method="post" action="<?=site_url("post/comment/$game_id/$no_next")?>"  >
 
 <div class="activity">
@@ -9,15 +10,21 @@
                         <div class="panel-body">
 
                         	<div class="row">
-	                      		<div class="col-lg-8">
-
-                              <?php
-                                    if($qest->picture!=""){
-                                          echo "<img src='".base_url()."uploads/$game_id/".$qest->picture."' width='200' />";
-                                    }
-                              ?>
-                              <?=$no.". ".$qest->question ?>
-                                <br/><br/>
+	                      		<div class="col-lg-12">
+                                          <?=$no.". " ?>
+                                          <?php
+                                                if($qest->picture!=""){
+                                                      echo "<img src='".base_url()."uploads/$game_id/".$qest->picture."' width='200' />";
+                                                }
+                                          ?>
+                                          <?=$qest->question ?>
+                                          <br/>
+                                      <?php if($timetype == "questlimit") : ?>
+                                            <div class="progress">
+                                              <div class=" progress-bar-striped bg-info progress-bar" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                      <?php endif; ?>
+                                      <br/>
 	                             	<ul class="list-group">
 	                             			<?php foreach($ans->result() as $a) : ?>
 	                                      		<li class="list-group-item">
@@ -34,9 +41,6 @@
 	                                      		</li>
 	                                  		<?php endforeach?>
 	                                </ul>
-	                            </div>
-	                            <div class="col-lg-4">
-                                        <div id="timedown" style="font-size:40px"><?=($timetype == "questlimit")? $time:"" ?><div>
 	                            </div>
 	                        </div>
                 		</div>
@@ -61,7 +65,10 @@
             clearInterval(tm);
             $("#questionForm").submit();
          }
-         $("#timedown").html(n);
+
+         var progress = n/<?=$time?>*100;
+         $('.progress-bar').css("width",progress+"%");
+         //$("#timedown").html(n);
       }
 
       <?php endif; ?>

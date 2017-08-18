@@ -38,3 +38,13 @@
 .list-group-item {
       text-align:left !important;
 }
+
+.bg-info{
+      background-color:#5bc0de !important;
+}
+
+.panel-primary>.panel-heading {
+    color: #ffffff;
+    background-color: #375a7f !important;
+    border-color: #375a7f !important;
+}
