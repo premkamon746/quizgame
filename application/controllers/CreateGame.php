@@ -56,14 +56,14 @@ class CreateGame extends Auth {
 			}
 
 			//when the game have question
-			$query = $this->question_md->getByGameIDNO($id,1);
-
-				if($query->num_rows() > 0){
-					$qid = $query->row()->id;
-					redirect("gamequestion/index/$id/$qid");
-				}else{
-					redirect("gamequestion/index/$id");
-				}
+			// $query = $this->question_md->getByGameIDNO($id,1);
+			//
+			// 	if($query->num_rows() > 0){
+			// 		$qid = $query->row()->id;
+			// 		redirect("gamequestion/index/$id/$qid");
+			// 	}else{
+			// 		redirect("gamequestion/index/$id");
+			// 	}
 		}
 
 		if($id > 0){

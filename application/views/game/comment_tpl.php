@@ -1,6 +1,6 @@
 
 <form class="form-horizontal" role="form" id="questionForm" method="post" action="<?=site_url("post/comment/$game_id/$no_next")?>"  >
-
+<input type="hidden" name="javascriptSubmit" value="2" />
 <div class="activity">
 
                   <div class="panel panel-primary">
@@ -10,14 +10,14 @@
                         <div class="panel-body">
 
                         	<div class="row">
-	                      		<div class="col-lg-12">
+	                      		<div class="col-lg-12 text-left">
                                           <?=$no.". " ?>
                                           <?php
                                                 if($qest->picture!=""){
                                                       echo "<img src='".base_url()."uploads/$game_id/".$qest->picture."' width='200' />";
                                                 }
                                           ?>
-                                          <?=$qest->question ?>
+                                          <?=nl2br($qest->question) ?>
                                           <br/>
                                       <?php if($timetype == "questlimit") : ?>
                                             <div class="progress">

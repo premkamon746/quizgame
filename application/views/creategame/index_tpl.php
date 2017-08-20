@@ -27,17 +27,26 @@
                                                 <div class="col-lg-8">
                                                   <ul class="list-group">
                                                         <li class="list-group-item"><input type="radio" name="timelimit_type" value="nolimit" checked >ไม่จำกัดเวลา</td></li>
-                                                        <li class="list-group-item"><input type="radio" name="timelimit_type" value="questlimit">เวลาแต่ละข้อภายใน(วินาที)</li>
+                                                        <li class="list-group-item">
+                                                              <table border="0">
+                                                                        <tr>
+                                                                              <td><input type="radio" name="timelimit_type" value="questlimit"> </td>
+                                                                              <td>เวลาข้อละ</td>
+                                                                              <td> <input type="text" class="form-control" id="time_limit" name="time_limit"
+                                                                               value="<?=(isset($game)&&$game->num_rows() > 0)?$game->row()->time_limit:''?>"
+                                                                               placeholder="วินาที" style="display:none;width:50px;"/></td>
+                                                                               <td>(วินาที)</td>
+                                                                        </tr>
+                                                                  </table>
+
+
+                                                        </li>
                                                         <!-- <li class="list-group-item"><input type="radio" name="timelimit_type" value="gamelimit">เวลารวมทุกข้อภายใน</li> -->
                                                   </ul>
+                                                  <div class="col-lg-12">จำกัดเวลาในการตอบคำถาม</div>
                                                 </div>
-                                                <div class="col-lg-4 ">
-                                                      <input type="text" class="form-control" id="time_limit" name="time_limit"
-                                                      value="<?=(isset($game)&&$game->num_rows() > 0)?$game->row()->time_limit:''?>"
-                                                      placeholder="วินาที" style="display:none;"/>
 
-                                                </div>
-                                                <div class="col-lg-12">จำกัดเวลาในการตอบคำถาม</div>
+
                                           </div>
 
 

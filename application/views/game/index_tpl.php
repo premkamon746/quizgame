@@ -1,4 +1,4 @@
-<br/><br/>
+<br/>
 <div class="row">
       <div class="text-center">
             <a href="<?=site_url("post/comment/$game_id") ?>" class="btn btn-success btn-lg active" role="button" aria-pressed="true">

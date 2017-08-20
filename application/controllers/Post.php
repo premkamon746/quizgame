@@ -37,26 +37,28 @@ class Post extends Auth {
 		$data = array();
 		$query = $this->question_md->getByGameIDNO($game_id,$no);
 
-		$pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
-		if($pageWasRefreshed && !$this->input->post()) {
-		   redirect("post/game/$game_id");
-		}
+		//log_message('debug', "request ppppppppppppppppppppppppppppppppppppp $game_id $no" );
+		//log_message('debug', "store yyyyyyyyyyyyyyyyyyyyyy ".print_r($query->result(), TRUE) );
+
+		// $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
+		// if($pageWasRefreshed && !$this->input->post()) {
+		//    redirect("post/game/$game_id");
+		// }
 
 		if($post = $this->input->post())
 		{
-			$point = $this->answer_md->getPlayPoint($post["choice"]);
-			$sumpoint = 0;
-			if($this->session->flashdata('point') )
-			{
 
-				$curent_point = $this->session->flashdata('point');
-				$sumpoint = $curent_point+$point;
-				$this->session->set_flashdata('point',array($sumpoint));
-				echo "next record : ".$sumpoint;
-			}else{
-				echo "start record : ".$point;
-				$this->session->set_flashdata('point',$point);
+			$point = 0;
+			if(isset($post["choice"])) //submit on timeout (not choice data)
+			{
+				$point = $this->answer_md->getPlayPoint($post["choice"]);
 			}
+			$curent_point = $this->session->flashdata('point');
+			$curent_point[$no] = $point;
+			log_message('debug', "store yyyyyyyyyyyyyyyyyyyyyy ".print_r($curent_point, TRUE) );
+			//print_r($curent_point);
+			$this->session->set_flashdata('point',$curent_point);
+
 		}
 
 		if($query->num_rows() > 0){
@@ -64,9 +66,18 @@ class Post extends Auth {
 			$data["ans"] = $this->answer_md->getByQuestionId($data["qest"]->id);
 		}else{
 
-			$query = $this->result_md->getGameResultByPoint($sumpoint);
+			$apoint = $this->session->flashdata('point');
+			if(!is_array($apoint) || count($apoint) <= 0){
+				redirect("post/game/$game_id");
+			}
+
+			$total_point = array_sum($apoint);
+			//echo $total_point;
+			// print_r($apoint);
+			// exit;
+			$query = $this->result_md->getGameResultByPoint($total_point);
 			$d = array();
-			$d["score"] = $sumpoint;
+			$d["score"] = $total_point;
 			if($query->num_rows() > 0)
 			{
 				$game_res = $query->row()->result;
@@ -75,7 +86,7 @@ class Post extends Auth {
 
 			$member_id = $this->session->userdata("member_id");
 			$this->play_result_md->save($game_id, $member_id,$d);
-			redirect("post/finish/$game_id");
+			redirect("post/finish/$game_id/$member_id");
 		}
 
 		$time_limit = $this->session->userdata("time_limit");
@@ -94,11 +105,11 @@ class Post extends Auth {
 		$this->load->view("layout_tpl",$content);
 	}
 
-	public function finish($game_id){
+	public function finish($game_id,$member_id){
 		$data = array();
 		$data["game_id"] = $game_id;
 		$data["gameinfo"] = $this->game_md->getOnePublic($game_id);
-		$member_id = $this->session->userdata("member_id");
+
 		//game point
 		$query = $this->answer_md->getTotalPoint($game_id);
 		$data["game_point"] = $query->row()->point;

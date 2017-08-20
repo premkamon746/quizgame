@@ -21,11 +21,11 @@
 				  'default_graph_version' => 'v2.9',
 				]);
 			$this->helper = $this->fb->getRedirectLoginHelper();
-			
+
 		}
 
 		function getLoginUrl($callback_url){
-			
+
 			$permissions = ['email','public_profile',"user_photos","publish_actions"]; // optional
 			$loginUrl = $this->helper->getLoginUrl($callback_url, $permissions);
 			return $loginUrl;

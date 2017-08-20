@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mosaddek">
     <meta name="keyword" content="">
-    <link rel="shortcut icon" href="img/favicon.png">
+    <!-- <link rel="shortcut icon" href="img/favicon.png"> -->
 
     <title></title>
 
@@ -32,72 +32,54 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-default ">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">Kapom.me</a>
-        </div>
-        <ul class="nav navbar-nav ">
-             <li >
-              <a href="<?=site_url("home"); ?>">
-                <div class="btn-sm">
-                   หน้าแรก
-                </div>
-              </a>
-            </li>
-          <li >
-            <a href="<?=site_url("mygame"); ?>">
-              <div class="btn-sm">
-                 เกมของฉัน
-              </div>
-            </a>
-          </li>
-          <li >
-            <a href="<?=site_url("creategame"); ?>">
-              <div class="btn-sm">
-                  สร้างเกม
-              </div>
-            </a>
-          </li>
-          <!-- <li class="active"><a href="#">Page 1</a></li>
-          <li><a href="#">Page 2</a></li>
-          <li><a href="#">Page 3</a></li>-->
-        </ul>
 
-       <!--  <form class="navbar-form navbar-left">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search">
-            <div class="input-group-btn">
-              <button class="btn btn-default" type="submit">
-                <i class="glyphicon glyphicon-search"></i>
-              </button>
+
+<div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+            <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="#">Brand</a>
             </div>
-          </div>
-        </form> -->
+            <div class="collapse navbar-collapse nav">
+                  <ul class="nav navbar-nav">
+                        <li ><a href="<?=site_url("home"); ?>"><div class="btn-sm">หน้าแรก</div></a> </li>
+                        <li ><a href="<?=site_url("mygame"); ?>"><div class="btn-sm">เกมของฉัน</div></a></li>
+                        <li ><a href="<?=site_url("creategame"); ?>"><div class="btn-sm">สร้างเกม</div></a></li>
+                        <?php
+                            $current_class = $this->router->fetch_class();
+                            $current_metd = $this->router->fetch_method();
+                          ?>
+                        <?php if($this->session->userdata("login")!="login")  :?>
+                            <!-- <li><a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a></li> -->
+                        <?php else :?>
+                            <li ><a href="<?=site_url("$current_class/logout/$current_class/$current_metd")?>" >
+                                  <div class="btn-sm"><span class="glyphicon glyphicon-log-out"></span> Log out</div>
+                                </a></li>
+                        <?php endif?>
 
-        <ul class="nav navbar-nav navbar-right ">
-            <?php
-                $current_class = $this->router->fetch_class();
-                $current_metd = $this->router->fetch_method();
-              ?>
-            <?php if($this->session->userdata("login")!="login")  :?>
-                <!-- <li><a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a></li> -->
-            <?php else :?>
-                <li >
-                    <a href="<?=site_url("$current_class/logout/$current_class/$current_metd")?>" >
-                      <div class="btn-sm">
-                        <span class="glyphicon glyphicon-log-out"></span> Log out
-                      </div>
-                    </a>
+                  </ul>
+                  <!-- <ul class="nav navbar-nav ">
+                  <ul class="nav navbar-nav navbar-right "> -->
+            </div>
+            <ul class="nav navbar-nav navbar-right ">
 
-                </li>
-            <?php endif?>
-        </ul>
+            </ul>
       </div>
-    </nav>
+</div>
+
+
+  
 
         <section id="container" >
             <section class="wrapper"  style="max-width:800px; margin:0 auto; text-align: center;" >
+
+                  <?php if(isset($bef_login)) { ?>
+                          <?=$bef_login ?>
+                  <?php } ?>
               <?php if(isset($this->login) && !$this->login && $this->session->userdata("login")!="login" ) : ?>
 
                     <br/><br/><br/>
@@ -107,10 +89,8 @@
               <?php else :?>
                 <?=$content?>
               <?php endif; ?>
-              
-                <?php if(isset($bef_login)) { ?>
-                        <?=$bef_login ?>
-                <?php } ?>
+
+
 
 
             </section>
