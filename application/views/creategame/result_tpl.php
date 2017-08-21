@@ -19,7 +19,13 @@
                                                                   <td  width="5%">ถึง</td>
                                                                   <td  width="15%"><input type="number" class="form-control" name="end_score[]" min="0" step="1"  value="<?=$r->end_score?>" /></td>
                                                                   <td  width="5%">ผล</td>
-                                                                  <td><input type="text" class="form-control" name="result[]"  value="<?=$r->result?>"/></td>
+                                                                  <td>
+                                                                        <input type="text" class="form-control" name="result[]"  value="<?=$r->result?>"/>
+                                                                  </td>
+                                                                  <!-- <td>
+                                                                        <input type="file" class="form-control" name="userfile[]" />
+                                                                        <img src="<?=base_url()?>uploads/<?=$game_id?>/<?=$r->picture?>" width="150" />
+                                                                  </td> -->
                                                             </tr>
                                                       <?php endforeach ?>
                                                 <?php }else{ ?>
@@ -31,6 +37,7 @@
                                                                   <td  width="15%"><input type="number" class="form-control" name="end_score[]" min="0" step="1" /></td>
                                                                   <td  width="5%">ผล</td>
                                                                   <td><input type="text" class="form-control" name="result[]" /></td>
+                                                                  <!-- <td><input type="file" class="form-control" name="userfile[]" /></td> -->
                                                             </tr>
                                                       <?php endfor ?>
 
@@ -45,7 +52,7 @@
                               <div class="row" >
                                     <div class="form-group">
 							            <div class="col-lg-12"><!-- col-lg-offset-2  -->
-							                <button type="submit" name="back" class="btn btn-danger">บันทึก </button>
+							                <button type="submit"  name="back" class="btn btn-danger">บันทึก </button>
                                                           <a href="<?=site_url("creategame/finish/$game_id")?>"  class="btn btn-success">เสร็จสิ้น</a>
 							            </div>
 							      </div>
@@ -65,4 +72,7 @@
             })
 
       })
+
+
+
   </script>

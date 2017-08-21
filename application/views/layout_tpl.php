@@ -34,14 +34,14 @@
   <body>
 
 
-<div class="navbar navbar-default navbar-fixed-top">
+<div class="navbar navbar-default ">
       <div class="container">
             <div class="navbar-header">
                   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                  </button>
+                  </button>c                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
                   <a class="navbar-brand" href="#">Brand</a>
             </div>
             <div class="collapse navbar-collapse nav">
@@ -72,7 +72,7 @@
 </div>
 
 
-  
+
 
         <section id="container" >
             <section class="wrapper"  style="max-width:800px; margin:0 auto; text-align: center;" >

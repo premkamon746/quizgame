@@ -86,7 +86,7 @@ class Post extends Auth {
 
 			$member_id = $this->session->userdata("member_id");
 			$this->play_result_md->save($game_id, $member_id,$d);
-			redirect("post/finish/$game_id/$member_id");
+			redirect("GameResult/score/$game_id/$member_id");
 		}
 
 		$time_limit = $this->session->userdata("time_limit");
@@ -105,27 +105,27 @@ class Post extends Auth {
 		$this->load->view("layout_tpl",$content);
 	}
 
-	public function finish($game_id,$member_id){
-		$data = array();
-		$data["game_id"] = $game_id;
-		$data["gameinfo"] = $this->game_md->getOnePublic($game_id);
-
-		//game point
-		$query = $this->answer_md->getTotalPoint($game_id);
-		$data["game_point"] = $query->row()->point;
-
-		//user play this game point
-		$sumpoint = $this->session->flashdata('point');
-
-		$query = $this->play_result_md->get($game_id, $member_id);
-		if($query->num_rows() > 0)
-		{
-			$data["game_res"] =  $query->row()->result;
-			$data["total_point"] = $query->row()->score;
-		}
-
-
-		$content["content"] = $this->load->view("game/finish_tpl",$data,true);
-		$this->load->view("layout_tpl",$content);
-	}
+	// public function result($game_id,$member_id){
+	// 	$data = array();
+	// 	$data["game_id"] = $game_id;
+	// 	$data["gameinfo"] = $this->game_md->getOnePublicMembId($game_id,$member_id);
+	//
+	// 	//game point
+	// 	$query = $this->answer_md->getTotalPointMembId($game_id,$member_id);
+	// 	$data["game_point"] = $query->row()->point;
+	//
+	// 	//user play this game point
+	// 	$sumpoint = $this->session->flashdata('point');
+	//
+	// 	$query = $this->play_result_md->get($game_id, $member_id);
+	// 	if($query->num_rows() > 0)
+	// 	{
+	// 		$data["game_res"] =  $query->row()->result;
+	// 		$data["total_point"] = $query->row()->score;
+	// 	}
+	//
+	//
+	// 	$content["content"] = $this->load->view("game/result_tpl",$data,true);
+	// 	$this->load->view("layout_tpl",$content);
+	// }
 }

@@ -33,6 +33,11 @@ class Answer_Md extends CI_Model { // คลาส Model_template สืบท�
 		return $this->db->get_where($this->table, array("game_id"=>$game_id));
 	}
 
+	function getTotalPointMembId($game_id,$member_id){
+		$this->db->select_sum('point');
+		return $this->db->get_where($this->table, array("game_id"=>$game_id,"member_id"=>$member_id));
+	}
+
 
 	function isOwner($member_id,$game_id){
 		$result =  $this->db->get_where($this->table, array("id"=>$game_id,"member_id"=>$member_id));

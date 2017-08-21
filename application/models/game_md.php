@@ -19,6 +19,10 @@ class Game_Md extends CI_Model { // คลาส Model_template สืบทอ�
 		return $this->db->get_where($this->table, array("id"=>$id, "status"=>"public"));
 	}
 
+	function getOnePublicMembId($id,$member_id){
+		return $this->db->get_where($this->table, array("id"=>$id,"member_id"=>$member_id, "status"=>"public"));
+	}
+
 	function getByMemberID($member_id){
 		return $this->db->get_where($this->table, array("member_id"=>$member_id));
 	}
