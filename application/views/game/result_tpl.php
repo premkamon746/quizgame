@@ -66,11 +66,11 @@
       }(document, 'script', 'facebook-jssdk'));
 
       document.getElementById('shareBtn').onclick = function() {
-        FB.ui({
-          method: 'share',
-          display: 'popup',
-          href: '<?=$actual_link?>',
-        }, function(response){});
+            FB.ui({
+             method: 'feed',
+             link: 'https://google.com',
+             caption: 'An example caption',
+           }, function(response){});
       }
 
 </script>
