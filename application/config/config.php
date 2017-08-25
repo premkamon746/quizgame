@@ -24,6 +24,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = '/m6star';
+if($_SERVER['REMOTE_ADDR']=="27.254.152.1"){
+	$config['base_url'] = '';
+}
+
 
 /*
 |--------------------------------------------------------------------------

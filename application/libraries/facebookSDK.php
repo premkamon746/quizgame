@@ -15,18 +15,18 @@
 
 		public function __construct(){
 
-			$this->fb = new Facebook\Facebook([
+			$this->fb = new Facebook\Facebook(array(
 				  'app_id' => '211474989230282',
 				  'app_secret' => '9bfedffd5382e8d14c0bd11d7376448b',
 				  'default_graph_version' => 'v2.9',
-				]);
+				));
 			$this->helper = $this->fb->getRedirectLoginHelper();
 
 		}
 
 		function getLoginUrl($callback_url){
 
-			$permissions = ['email','public_profile',"user_photos","publish_actions"]; // optional
+			$permissions = array('email','public_profile',"user_photos","publish_actions"); // optional
 			$loginUrl = $this->helper->getLoginUrl($callback_url, $permissions);
 			return $loginUrl;
 		}

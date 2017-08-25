@@ -41,7 +41,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                  </button>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                  </button>
                   <a class="navbar-brand" href="#">Brand</a>
             </div>
             <div class="collapse navbar-collapse nav">
@@ -83,7 +83,10 @@
               <?php if(isset($this->login) && !$this->login && $this->session->userdata("login")!="login" ) : ?>
 
                     <br/><br/><br/>
-                    <a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a>
+                    <!-- <a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a> -->
+
+                    <div class="fb-login-button"  data-scope="email,public_profile,user_photos,publish_actions" data-max-rows="1" data-size="large" data-button-type="login_with"
+                    data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState();"></div>
                     ล็อกอินก่อนจ้า
 
               <?php else :?>
@@ -107,6 +110,88 @@
             </div>
           </div>
         </div>
+        <script>
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+          //console.log('statusChangeCallback');
+          console.log(response);
+          if (response.status === 'connected') {
+            // Logged into your app and Facebook.
+            //testAPI();
+             var atk = response.authResponse.accessToken;
+             window.location.href = "<?=$this->cbUrl?>&atk="+atk;
 
+          } else {
+
+                FB.login(function(response) {
+                      statusChangeCallback(response);
+                  }, {
+                      scope: 'email,public_profile,user_photos,publish_actions',
+                      return_scopes: true
+                  });
+
+            // The person is not logged into your app or we are unable to tell.
+
+            // document.getElementById('status').innerHTML = 'Please log ' +
+            //   'into this app.';
+            //console.log(response);
+          }
+        }
+
+        // This function is called when someone finishes with the Login
+        // Button.  See the onlogin handler attached to it in the sample
+        // code below.
+        function checkLoginState() {
+
+             FB.getLoginStatus(function(response) {
+               statusChangeCallback(response);
+             });
+
+        }
+
+        window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '211474989230282',
+          cookie     : true,  // enable cookies to allow the server to access
+            status: true,                  // the session
+          xfbml      : true,  // parse social plugins on this page
+          version    : 'v2.8' ,// use graph api version 2.8
+          oauth         : true
+        });
+
+        // Now that we've initialized the JavaScript SDK, we call
+        // FB.getLoginStatus().  This function gets the state of the
+        // person visiting this page and can return one of three states to
+        // the callback you provide.  They can be:
+        //
+        // 1. Logged into your app ('connected')
+        // 2. Logged into Facebook, but not your app ('not_authorized')
+        // 3. Not logged into Facebook and can't tell if they are logged into
+        //    your app or not.
+        //
+        // These three cases are handled in the callback function.
+
+
+
+        };
+
+        // Load the SDK asynchronously
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        // Here we run a very simple test of the Graph API after login is
+        // successful.  See statusChangeCallback() for when this call is made.
+        function testAPI() {
+          console.log('Welcome!  Fetching your information.... ');
+          FB.api('/me', function(response) {
+                console.log(response);
+          });
+        }
+      </script>
   </body>
 </html>

@@ -65,10 +65,11 @@
             fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
 
+      <?php $share = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>
       document.getElementById('shareBtn').onclick = function() {
             FB.ui({
              method: 'feed',
-             link: 'https://google.com',
+             link: '<?=$share?>',
              caption: 'An example caption',
            }, function(response){});
       }
