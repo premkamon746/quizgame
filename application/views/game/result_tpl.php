@@ -1,11 +1,6 @@
-<? $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
+<?php $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
 
 <?php foreach ($gameinfo->result() as $r) {?>
-<meta property="og:title" content="<?=$r->title?>" />
-<meta property="og:type" content="article" />
-<meta property="og:image" content="" />
-<meta property="og:url" content="<?=$actual_link?>" />
-<meta property="og:description" content="<?=$total_point?>/<?=$game_point?> คะแนน " <?=isset($game_res)?$game_res: ''?> />
 
 <div class="row">
 

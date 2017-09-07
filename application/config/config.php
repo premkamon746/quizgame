@@ -23,11 +23,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '/m6star';
-if($_SERVER['REMOTE_ADDR']=="27.254.152.1"){
-	$config['base_url'] = '';
-}
 
+$pos = strpos($_SERVER['SERVER_NAME'], "sabyji.com");
+$config['base_url'] = '/m6star';
+if($pos !== false){
+	$config['base_url'] = '/';
+}
 
 /*
 |--------------------------------------------------------------------------

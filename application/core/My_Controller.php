@@ -20,7 +20,7 @@ class My_Controller extends CI_Controller
 		// $callback =  "http://".$_SERVER['HTTP_HOST']."/m6star/$class/callback?rd=".uri_string();
 		// $this->loginUrl =  $this->fb->getLoginUrl($callback);
 
-		$this->cbUrl =  "http://".$_SERVER['HTTP_HOST']."/m6star/$class/callback?rd=".uri_string();
+		$this->cbUrl =  "http://".$_SERVER['HTTP_HOST']."/$class/callback?rd=".uri_string();
 	}
 
 	public function callback(){
@@ -61,10 +61,10 @@ class My_Controller extends CI_Controller
 
 	}
 
-    public function logout($class,$method){
+    public function logout($class="",$method=""){
         $this->session->unset_userdata("login");
         $this->session->unset_userdata("member_id");
-        redirect("$class/$method");
+        redirect();
     }
 }
 ?>

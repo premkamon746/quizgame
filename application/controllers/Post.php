@@ -55,9 +55,11 @@ class Post extends Auth {
 			}
 			$curent_point = $this->session->flashdata('point');
 			$curent_point[$no] = $point;
-			log_message('debug', "store yyyyyyyyyyyyyyyyyyyyyy ".print_r($curent_point, TRUE) );
+			//log_message('debug', "store yyyyyyyyyyyyyyyyyyyyyy ".print_r($curent_point, TRUE) );
 			//print_r($curent_point);
 			$this->session->set_flashdata('point',$curent_point);
+			// $this->session->keep_flashdata('point');
+			// redirect("post/comment/$game_id/$no");
 
 		}
 

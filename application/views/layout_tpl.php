@@ -8,6 +8,27 @@
     <meta name="keyword" content="">
     <!-- <link rel="shortcut icon" href="img/favicon.png"> -->
 
+
+    <?php
+           $class = $this->router->fetch_class();
+           $med = $this->router->fetch_method();
+    ?>
+
+    <?php if ($class = "GameResult" && $med = "score" && isset($gameinfo)) : ?>
+
+
+          <?php $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
+
+          <?php foreach ($gameinfo->result() as $r) {?>
+                <meta property="og:title" content="<?=$r->title?>" />
+                <meta property="og:type" content="article" />
+                <meta property="og:image" content="" />
+                <meta property="og:url" content="<?=$actual_link?>" />
+                <meta property="og:description" content="<?=$total_point?>/<?=$game_point?> คะแนน  <?=isset($game_res)?$game_res: ''?>" />
+         <?php } ?>
+    <?php endif; ?>
+
+
     <title></title>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
@@ -193,5 +214,10 @@
           });
         }
       </script>
+      <br/><br/><br/>
+      <p>
+      	  <a href="<?=site_url("/")?>">home</a>
+      	|<a href="<?=site_url("/content/policy")?>">Privacy Policy</a>
+      </p>
   </body>
 </html>

@@ -74,7 +74,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $active_group = 'default';
 
-if($_SERVER['SERVER_ADDR']=="27.254.152.1"){
+$pos = strpos($_SERVER['SERVER_NAME'], "sabyji.com");
+
+if($pos !== false){
 	$active_group = 'product';
 }
 $query_builder = TRUE;
@@ -83,7 +85,7 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => 'root',
-	'password' => '1234qwer',
+	'password' => '',
 	'database' => 'm6star',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -104,7 +106,7 @@ $db['default'] = array(
 
 $db['product'] = array(
 	'dsn'	=> '',
-	'hostname' => '27.254.152.1',
+	'hostname' => 'localhost',
 	'username' => 'ustarcom_qz',
 	'password' => 'F5S27Euh',
 	'database' => 'ustarcom_qz',
