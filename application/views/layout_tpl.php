@@ -54,8 +54,35 @@
 
   <body>
 
+<div navbar navbar-default  style="height:40px;">
+      <div class="container">
 
-<div class="navbar navbar-default ">
+
+            <ul class="nav  navbar-right" >
+
+                  <li>
+                        <?php
+                            $current_class = $this->router->fetch_class();
+                            $current_metd = $this->router->fetch_method();
+                         ?>
+                        <?php if($this->session->userdata("login")!="login")  :?>
+                            <!-- <a href="<?=$this->loginUrl ?>"><span class="glyphicon glyphicon glyphicon-log-in"></span> Facebook Login</a> -->
+                        <?php else :?>
+                            <a href="<?=site_url("$current_class/logout/$current_class/$current_metd")?>" >
+                                  <div class="btn-sm"><span class="glyphicon glyphicon-log-out"></span> Log out</div>
+                               </a>
+                        <?php endif?>
+                  </li>
+            </ul>
+            <ul class="nav  navbar-right" >
+                  <li style="margin-top:14px;">
+
+                        <div class="fb-like" data-href="https://www.facebook.com/sabyjicom/" data-layout="button" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+                  </li>
+            </ul>
+      </div>
+</div>
+<div class="navbar navbar-default " style="">
       <div class="container">
             <div class="navbar-header">
                   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -63,24 +90,17 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="#">Brand</a>
+                  <a class="navbar-brand" href="<?=site_url("/");?>">
+                        <img src="<?=base_url()?>assets/img/logo.png" style="margin-top:-40px;" />
+                        
+                  </a>
             </div>
             <div class="collapse navbar-collapse nav">
                   <ul class="nav navbar-nav">
                         <li ><a href="<?=site_url("home"); ?>"><div class="btn-sm">หน้าแรก</div></a> </li>
                         <li ><a href="<?=site_url("mygame"); ?>"><div class="btn-sm">เกมของฉัน</div></a></li>
                         <li ><a href="<?=site_url("creategame"); ?>"><div class="btn-sm">สร้างเกม</div></a></li>
-                        <?php
-                            $current_class = $this->router->fetch_class();
-                            $current_metd = $this->router->fetch_method();
-                          ?>
-                        <?php if($this->session->userdata("login")!="login")  :?>
-                            <!-- <li><a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a></li> -->
-                        <?php else :?>
-                            <li ><a href="<?=site_url("$current_class/logout/$current_class/$current_metd")?>" >
-                                  <div class="btn-sm"><span class="glyphicon glyphicon-log-out"></span> Log out</div>
-                                </a></li>
-                        <?php endif?>
+
 
                   </ul>
                   <!-- <ul class="nav navbar-nav ">
@@ -218,41 +238,14 @@
         }
       </script>
       <br/><br/><br/>
+<br/><br/><br/>
 
-      <footer class="footer">
-        <div class="container">
-            <div class="row">
+      <footer>
+            <div style="text-align:center;">
+                 <a href="<?=site_url("/")?>">Home</a> |
+                 <a href="<?=site_url("/content/policy")?>">Privacy Policy</a>
+           </div>
+      </footer>
 
-
-                 <div class="col-lg-3 col-sm-3">
-                    <address>
-                        <p><a href="<?=site_url("/")?>">Home</a></p>
-                        <p><a href="<?=site_url("/content/policy")?>">Privacy Policy</a></p>
-
-                    </address>
-                </div>
-                <div class="col-lg-5 col-sm-5">
-                   <!-- <h1>latest tweet</h1>
-                    <div class="tweet-box">
-                        <i class="icon-twitter"></i>
-                        <em>Please follow <a href="javascript:;">@nettus</a> for all future updates of us! <a href="javascript:;">twitter.com/vectorlab</a></em>
-                    </div>-->
-                </div>
-                <div class="col-lg-3 col-sm-3 col-lg-offset-1">
-                    <!--<h1>stay connected</h1>
-                    <ul class="social-link-footer list-unstyled">
-                        <li><a href="#"><i class="icon-facebook"></i></a></li>
-                        <li><a href="#"><i class="icon-google-plus"></i></a></li>
-                        <li><a href="#"><i class="icon-dribbble"></i></a></li>
-                        <li><a href="#"><i class="icon-linkedin"></i></a></li>
-                        <li><a href="#"><i class="icon-twitter"></i></a></li>
-                        <li><a href="#"><i class="icon-skype"></i></a></li>
-                        <li><a href="#"><i class="icon-github"></i></a></li>
-                        <li><a href="#"><i class="icon-youtube"></i></a></li>
-                    </ul>-->
-                </div>
-            </div>
-        </div>
-    </footer>
   </body>
 </html>

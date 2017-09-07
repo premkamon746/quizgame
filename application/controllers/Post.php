@@ -54,6 +54,15 @@ class Post extends Auth {
 				$point = $this->answer_md->getPlayPoint($post["choice"]);
 			}
 			$curent_point = $this->session->flashdata('point');
+
+
+
+			// important for secure user refresh time
+
+			if(isset($curent_point[$no]) ){ // check refresh page
+				redirect("post/game/$game_id");
+			}
+
 			$curent_point[$no] = $point;
 			//log_message('debug', "store yyyyyyyyyyyyyyyyyyyyyy ".print_r($curent_point, TRUE) );
 			//print_r($curent_point);
