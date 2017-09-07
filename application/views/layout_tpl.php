@@ -106,8 +106,10 @@
                     <br/><br/><br/>
                     <!-- <a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a> -->
 
-                    <div class="fb-login-button"  data-scope="email,public_profile,user_photos,publish_actions" data-max-rows="1" data-size="large" data-button-type="login_with"
+                    <div class="fb-login-button"  data-scope="email,public_profile" data-max-rows="1" data-size="large" data-button-type="login_with"
                     data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState();"></div>
+                    <!-- <div class="fb-login-button"  data-scope="email,public_profile,user_photos,publish_actions" data-max-rows="1" data-size="large" data-button-type="login_with"
+                    data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState();"></div> -->
                     ล็อกอินก่อนจ้า
 
               <?php else :?>
@@ -147,7 +149,8 @@
                 FB.login(function(response) {
                       statusChangeCallback(response);
                   }, {
-                      scope: 'email,public_profile,user_photos,publish_actions',
+                      scope: 'email,public_profile',
+                      //scope: 'email,public_profile,user_photos,publish_actions',
                       return_scopes: true
                   });
 
