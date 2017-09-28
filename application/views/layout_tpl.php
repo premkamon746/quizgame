@@ -91,8 +91,8 @@
                         <span class="icon-bar"></span>
                   </button>
                   <a class="navbar-brand" href="<?=site_url("/");?>">
-                        <img src="<?=base_url()?>assets/img/logo.png" style="margin-top:-40px;" />
-                        
+                        <!-- <img src="<?=base_url()?>assets/img/logo.png" style="margin-top:-40px;" /> -->
+
                   </a>
             </div>
             <div class="collapse navbar-collapse nav">
