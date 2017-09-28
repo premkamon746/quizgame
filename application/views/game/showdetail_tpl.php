@@ -4,7 +4,7 @@
             <div class="col-md-12">
                   <H4><?=$res->title?></H4>
                   <div><?=$res->detail?></div>
-                  <div><a href="<?=site_url("post/game/$res->id")?>"><img src="<?=base_url();?>uploads/<?=$res->id?>/<?=$res->picture?>" width="350"/></a></div>
+                  <div><img src="<?=base_url();?>uploads/<?=$res->id?>/<?=$res->picture?>" width="350"/></div>
                   <H4>
                         <?php
                               if($res->timelimit_type == "questlimit"){

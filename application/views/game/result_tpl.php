@@ -42,6 +42,10 @@
 
 
 <script>
+
+      <?php if(isset($_GET['tg'])) :?>
+            window.location="<?='http://' . $_SERVER['HTTP_HOST'] . "/post/game/$game_id" ?>";
+      <?php endif ?>
       window.fbAsyncInit = function() {
       FB.init({
             appId            : '211474989230282',
@@ -64,7 +68,7 @@
       document.getElementById('shareBtn').onclick = function() {
             FB.ui({
              method: 'feed',
-             link: '<?=$share?>',
+             link: '<?=$share?>?tg=<?=time()?>',
              caption: 'An example caption',
            }, function(response){});
       }

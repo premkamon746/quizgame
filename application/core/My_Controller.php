@@ -20,7 +20,9 @@ class My_Controller extends CI_Controller
 		// $callback =  "http://".$_SERVER['HTTP_HOST']."/m6star/$class/callback?rd=".uri_string();
 		// $this->loginUrl =  $this->fb->getLoginUrl($callback);
 
-		$this->cbUrl =  "http://".$_SERVER['HTTP_HOST']."/$class/callback?rd=".uri_string();
+
+		$base_url = $this->config->item('base_url');
+		$this->cbUrl =  "http://".$_SERVER['HTTP_HOST']."$base_url/$class/callback?rd=".uri_string();
 	}
 
 	public function callback(){
