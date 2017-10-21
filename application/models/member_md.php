@@ -25,6 +25,11 @@ class Member_Md extends CI_Model { // คลาส Model_template สืบท�
 		return $result;
 	}
 
+	function getMemberInfoById($id){
+		$result = $this->db->get_where($this->table,array("id"=>$id));
+		return $result;
+	}
+
 	function isFbIDExists($fbid){
 		$result = $this->db->get_where($this->table,array("fbid"=>$fbid));
 		if($result->num_rows() > 0){
@@ -38,6 +43,12 @@ class Member_Md extends CI_Model { // คลาส Model_template สืบท�
 		if($result->num_rows() > 0){
 			return true;
 		}
+	}
+
+	function update_profile($id, $data){
+		$this->db->where(array("id"=>$id));
+		$query = $this->db->update($this->table,$data);
+		return $query;
 	}
 
 }
