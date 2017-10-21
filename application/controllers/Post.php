@@ -84,18 +84,25 @@ class Post extends Auth {
 
 			$total_point = array_sum($apoint);
 			//echo $total_point;
+
 			// print_r($apoint);
 			// exit;
-			$query = $this->result_md->getGameResultByPoint($total_point);
+			$query = $this->result_md->getGameResultByPoint($game_id, $total_point);
+			//print_r($query->result());exit;
 			$d = array();
 			$d["score"] = $total_point;
 			if($query->num_rows() > 0)
 			{
 				$game_res = $query->row()->result;
+				$picture = $query->row()->picture;
+				$title = $query->row()->title;
 				$d["result"] = $game_res;
+				$d["picture"] = $picture;
+				$d["title"] = $title;
 			}
 
 			$member_id = $this->session->userdata("member_id");
+			//print_r($d);exit;
 			$this->play_result_md->save($game_id, $member_id,$d);
 			redirect("GameResult/score/$game_id/$member_id");
 		}

@@ -44,9 +44,18 @@
                                                         <!-- <li class="list-group-item"><input type="radio" name="timelimit_type" value="gamelimit">เวลารวมทุกข้อภายใน</li> -->
                                                   </ul>
                                                   <div class="col-lg-12">จำกัดเวลาในการตอบคำถาม</div>
+
+
+
                                                 </div>
+                                                <div style="clear:both;"></div>
+                                                <br/><br/>
 
-
+                                                <div class="col-lg-12 text-left">
+                                                      <h4>หน้าแสดงผลคะแนน</h4>
+                                                      <input type="checkbox" name="show_score" value="" <?=!isset($game)||$game->row()->show_score==0?'':'checked' ?> />แสดงคะแนนในหน้าคำตอบ เช่น 8  คะแนน<br/>
+                                                      <input type="checkbox" name="show_total" value="" <?=!isset($game)||$game->row()->show_total==0?'':'checked' ?> />แสดงคะแนน "รวม" ในหน้าคำตอบ  เช่น 8/10 คะแนน
+                                                </div>
                                           </div>
 
 

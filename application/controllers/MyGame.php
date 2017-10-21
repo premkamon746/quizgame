@@ -18,5 +18,12 @@ class MyGame extends Auth {
 		$this->load->view("layout_tpl",$content);
 	}
 
-	
+	public function delete($id){
+		$member_id = $this->session->userdata("member_id");
+		$this->db->delete("game",array("member_id"=>$member_id,"id"=>$id));
+		//echo $this->db->last_query();
+		redirect("mygame");
+	}
+
+
 }

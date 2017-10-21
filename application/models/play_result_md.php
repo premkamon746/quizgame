@@ -7,7 +7,9 @@ class Play_Result_Md extends CI_Model { // คลาส Model_template สืบ
 
 
 	function get($game_id,$member_id){
-		return $this->db->get_where($this->table, array("game_id"=>$game_id,"member_id"=>$member_id));
+		$query =  $this->db->get_where($this->table, array("game_id"=>$game_id,"member_id"=>$member_id));
+		//echo $this->db->last_query();
+		return $query;
 	}
 
 	function hasGameSave($game_id, $member_id){
@@ -21,7 +23,9 @@ class Play_Result_Md extends CI_Model { // คลาส Model_template สืบ
 
 	function getGameResultByPoint($point)
 	{
-		return $this->db->get_where($this->table, array("start_score <= "=>$point,"start_score >= "=>$point));
+		$query =   $this->db->get_where($this->table, array("start_score <= "=>$point,"end_score >= "=>$point));
+		//echo $this->db->last_query();
+		return $query;
 	}
 
 	function getByGameId($game_id)
@@ -50,8 +54,34 @@ class Play_Result_Md extends CI_Model { // คลาส Model_template สืบ
 			$this->db->where($where);
 
 			$this->db->update($this->table, $data);
-			return $this->db->insert_id();
+			$query = $this->db->get_where($this->table, array("game_id"=>$game_id,"member_id"=>$member_id));
+			if($query->num_rows() > 0){
+				return $query->row()->id;
+			}
 		}
+
+		// if($this->hasGameSave($game_id, $member_id)){
+		//
+		// 	$this->db->delete($this->table,array("game_id"=>$game_id,"member_id"=>$member_id));
+		// }
+		//
+		// // else{
+		// // 	$where["member_id"] = $member_id;
+		// // 	$where["game_id"] = $game_id;
+		// // 	$this->db->where($where);
+		// //
+		// // 	$this->db->update($this->table, $data);
+		// // 	return $this->db->insert_id();
+		// // }
+		//
+		// $data["member_id"] = $member_id;
+		// $data["game_id"] = $game_id;
+		//
+		// print_r($data);
+		// exit;
+		// $this->db->set("create_date","now()",false);
+		// $this->db->insert($this->table, $data);
+		// return $this->db->insert_id();
 
 	}
 

@@ -25,7 +25,7 @@
                                             </div>
                                       <?php endif; ?>
                                       <br/>
-	                             	<ul class="list-group">
+	                             	<ul class="list-group" style="cursor:pointer;">
 	                             			<?php foreach($ans->result() as $a) : ?>
 	                                      		<li class="list-group-item">
 	                                      			<input type="radio" name="choice" value="<?=$a->id?>" />
@@ -54,6 +54,11 @@
   		$("input[type='radio']").click(function(){
   			$("#questionForm").submit();
   		});
+
+            $(".list-group-item").click(function(){
+                  $(this).find("input[type='radio']").prop("checked",true);
+                  $("#questionForm").submit();
+            })
   	});
 
       <?php if($timetype == "questlimit") : ?>

@@ -24,7 +24,7 @@
                                                 <?php }else{ ?>
                                                       <img src="<?=base_url()?>/assets/img/no_preview.jpg" width="120" class="selectImage" />
                                                 <?php }//endif?>
-                                            <input type="file" class="form-control choice"  name="userfile[]"  data-no="<?=$i ?>" style="display: none;"/>
+                                            <input type="file" class="form-control choice"  name="userfile[]"  data-no="<?=$i ?>" />
                                           </div>
                                 </div>
                                 </div>

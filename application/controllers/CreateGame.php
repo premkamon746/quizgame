@@ -33,6 +33,9 @@ class CreateGame extends Auth {
 			$d["timelimit_type"] = $post["timelimit_type"];
 			$d["time_limit"] = $post["time_limit"];
 
+			$d["show_score"] = isset($post["show_score"])?1:0;
+			$d["show_total"] = isset($post["show_total"])?1:0;
+
 			if($id > 0){
 
 				if(isset($_FILES['userfile']['name'])&&$_FILES['userfile']['name']!=""){
@@ -46,12 +49,15 @@ class CreateGame extends Auth {
 
 				$this->game_md->update($d,$id);
 			}else{
-				$ext = pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
-				$file_name = uniqid('img_').".".$ext;
-				$d["picture"] = $file_name;
-				$id = $this->game_md->save($d);
-				$data["message"] = $this->do_upload($id,$file_name);
-
+				$id = '';
+				if(isset($_FILES['userfile']['name'])&&$_FILES['userfile']['name']!=""){
+					$ext = pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
+					$file_name = uniqid('img_').".".$ext;
+					$d["picture"] = $file_name;
+					$id = $this->game_md->save($d);
+					$data["message"] = $this->do_upload($id,$file_name);
+				}
+				redirect("creategame/index/$id");
 
 			}
 
@@ -73,8 +79,6 @@ class CreateGame extends Auth {
 		}
 		$data["game_id"] = $id;
 		$content["content"] = $this->load->view("creategame/index_tpl",$data,true);
-
-
 
 		$this->load->view("layout_tpl",$content);
 	}
@@ -158,30 +162,60 @@ class CreateGame extends Auth {
 
 	    if($post = $this->input->post()){
 		    $d = array();
-		    $res = $this->result_md->delete($game_id);
-		    //print_r($_FILES);
-			if($res){
+		    //$res = $this->result_md->delete($game_id);
+
+			//if($res){
+				$this->load->library('upload');
+			    $files = $_FILES;
 			    for($i = 0; $i < count($post["result"]); $i++){
 				    if(/*$post["result"][$i] !="" &&*/ $post["start_score"][$i] !="" && $post["end_score"][$i]!="")
 					{
 
-						// $ext = pathinfo($_FILES['userfile']['name'][$i], PATHINFO_EXTENSION);
-						// $file_name = uniqid('img_').".".$ext;
-						// $data["message"] = $this->do_multi_upload($game_id,$file_name,$i);
+						//check empty file
+						//echo $files['userfile']['name'][$i]."<br/>";
+						$file_name = "";
+						if(isset( $files['userfile']['name'][$i])&& $files['userfile']['name'][$i]!=""){
+							$ext = pathinfo($files['userfile']['name'][$i], PATHINFO_EXTENSION);
+							$file_name = uniqid('img_').".".$ext;
+							//echo $file_name;
+							$data["message"] = $this->do_multi_upload($game_id,$files,$file_name,$i);
+						}
+						//check empty file
 
-						$d[] = array(
-							"game_id" =>$game_id,
-							"member_id" =>$member_id,
-							"start_score" =>$post["start_score"][$i],
-							"end_score" =>$post["end_score"][$i],
-							"result" =>$post["result"][$i]
-							// ,"picture" =>$file_name
-						);
+						if($post["res_id"][$i] !=""){
+							$d = array(
+								"game_id" =>$game_id,
+								"member_id" =>$member_id,
+								"start_score" =>$post["start_score"][$i],
+								"end_score" =>$post["end_score"][$i],
+								"title" =>$post["title"][$i],
+								"result" =>$post["result"][$i],
+							);
+
+							if($file_name !=""){
+								$d["picture"] =$file_name;
+							}
+							$id = $post["res_id"][$i]; // get id from hidden field
+							$this->result_md->update($d,$id);
+						}else{
+							$d = array(
+								"game_id" =>$game_id,
+								"member_id" =>$member_id,
+								"start_score" =>$post["start_score"][$i],
+								"end_score" =>$post["end_score"][$i],
+								"title" =>$post["title"][$i],
+								"result" =>$post["result"][$i],
+							    "picture" =>$file_name
+							);
+							$this->result_md->save($d);
+
+						}
+
 				    }
 
 			    }
-			    $this->result_md->save_batch($d);
-			}
+			    //$this->result_md->save_batch($d);
+			//}
 	    }
 
 	    $query = $this->answer_md->getTotalPoint($game_id);
@@ -193,8 +227,13 @@ class CreateGame extends Auth {
 	    $this->load->view("layout_tpl",$content);
     }
 
+    function delete_res($gmae_id,$id){
+	    $this->result_md->remove($gmae_id,$id);
+	    redirect("creategame/result/$gmae_id");
+    }
 
-    private function do_multi_upload($game_id ,$filename,$i)
+
+    private function do_multi_upload($game_id,$files ,$filename,$i)
 	{
 		$config['file_name']            = $filename;
 		$config['upload_path']          = "./uploads/$game_id/";
@@ -203,31 +242,35 @@ class CreateGame extends Auth {
 		$config['max_width']            = 1024;
 		$config['max_height']           = 1024;
 
+		//print_r($config);
 
-		$_FILES['userfile']['name']= $_FILES['userfile']['name'][$i];
-		$_FILES['userfile']['type']= $_FILES['userfile']['type'][$i];
-		$_FILES['userfile']['tmp_name']= $_FILES['userfile']['tmp_name'][$i];
-		$_FILES['userfile']['error']= $_FILES['userfile']['error'][$i];
-		$_FILES['userfile']['size']= $_FILES['userfile']['size'][$i];
+
+		$_FILES['userfile']['name']= $files['userfile']['name'][$i];
+		$_FILES['userfile']['type']= $files['userfile']['type'][$i];
+		$_FILES['userfile']['tmp_name']= $files['userfile']['tmp_name'][$i];
+		$_FILES['userfile']['error']= $files['userfile']['error'][$i];
+		$_FILES['userfile']['size']= $files['userfile']['size'][$i];
 
 		if (!file_exists($config['upload_path'])) {
 						  mkdir($config['upload_path'], 0777);
-						  echo "The directory  was successfully created.";
+						  //echo "The directory  was successfully created.";
 
 					    }
 		$msg = "";
-		$this->load->library('upload', $config);
-
+		//$this->load->library('upload');
+		$this->upload->initialize($config);
 		if ( ! $this->upload->do_upload('userfile'))
 		{
 			//$error = array('error' => $this->upload->display_errors());
 			$msg =  $this->upload->display_errors();
+			//print_r($msg);
 			//$this->load->view('upload_form', $error);
 		}
 		else
 		{
 			//$data = array('upload_data' => $this->upload->data());
 			$msg =  $this->upload->data() ;
+			//print_r($msg);
 			//$this->load->view('upload_success', $data);
 		}
 

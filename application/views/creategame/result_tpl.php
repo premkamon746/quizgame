@@ -14,35 +14,52 @@
                                                 <?php if($result->num_rows() > 0){ ?>
                                                       <?php foreach ($result->result() as $r) :?>
                                                             <tr class="tt">
-                                                                  <td width="10%">คะแนน</td>
+                                                                  <td width="10%">คะแนน<input type="hidden" name="res_id[]" value="<?=$r->id?>"/> </td>
                                                                   <td  width="15%"><input type="number" class="form-control" name="start_score[]" min="0" step="1" value="<?=$r->start_score?>" /></td>
                                                                   <td  width="5%">ถึง</td>
                                                                   <td  width="15%"><input type="number" class="form-control" name="end_score[]" min="0" step="1"  value="<?=$r->end_score?>" /></td>
                                                                   <td  width="5%">ผล</td>
                                                                   <td>
-                                                                        <input type="text" class="form-control" name="result[]"  value="<?=$r->result?>"/>
-                                                                  </td>
-                                                                  <!-- <td>
+                                                                  	<input type="text" class="form-control" name="title[]" 
+                                                                    value="<?=$r->title?>" /><br/>
+                                                                        <textarea  class="form-control" name="result[]" rows="5" ><?=$r->result?></textarea><br/>
                                                                         <input type="file" class="form-control" name="userfile[]" />
-                                                                        <img src="<?=base_url()?>uploads/<?=$game_id?>/<?=$r->picture?>" width="150" />
-                                                                  </td> -->
+                                                                        <img src="<?=base_url()?>uploads/<?=$game_id?>/<?=$r->picture?>" width="387" />
+                                                                  </td>
+                                                                  <td  width="5%"><i class="icon-remove-sign " style="color:red;cursor:pointer;" onclick="deleteResFn(<?=$r->id?>);"></i> </td>
                                                             </tr>
                                                       <?php endforeach ?>
+
                                                 <?php }else{ ?>
-                                                      <?php for ($i = 0; $i < 5; $i++) :?>
+                                                      <!-- <?php for ($i = 0; $i < 5; $i++) :?>
                                                             <tr class="tt">
-                                                                  <td width="10%">คะแนน</td>
+                                                                  <td width="10%">คะแนน<input type="hidden" name="res_id[]" /> </td>
                                                                   <td  width="15%"><input type="number" class="form-control" name="start_score[]" min="0" step="1" /></td>
                                                                   <td  width="5%">ถึง</td>
                                                                   <td  width="15%"><input type="number" class="form-control" name="end_score[]" min="0" step="1" /></td>
                                                                   <td  width="5%">ผล</td>
-                                                                  <td><input type="text" class="form-control" name="result[]" /></td>
-                                                                  <!-- <td><input type="file" class="form-control" name="userfile[]" /></td> -->
+                                                                  <td>
+                                                                        <textarea  class="form-control" name="result[]" rows="5" ></textarea><br/>
+                                                                        <input type="file" class="form-control" name="userfile[]" />
+                                                                  </td>
+
                                                             </tr>
-                                                      <?php endfor ?>
+                                                      <?php endfor ?> -->
 
                                                 <?php }//endif ?>
+                                                <tr class="tt">
+                                                      <td width="10%">คะแนน<input type="hidden" name="res_id[]" /> </td>
+                                                      <td  width="15%"><input type="number" class="form-control" name="start_score[]" min="0" step="1" /></td>
+                                                      <td  width="5%">ถึง</td>
+                                                      <td  width="15%"><input type="number" class="form-control" name="end_score[]" min="0" step="1" /></td>
+                                                      <td  width="5%">ผล</td>
+                                                      <td><input type="text" class="form-control" name="title[]"  /><br/>
+                                                            <textarea  class="form-control" name="result[]" rows="5" ></textarea><br/>
+                                                            <input type="file" class="form-control" name="userfile[]" />
+                                                      </td>
+                                                      <td  width="5%"></td>
 
+                                                </tr>
                                           </table>
                                           <button type="button" name="back" class="btn btn-info" id="addResult"><span class="glyphicon glyphicon-plus"> </button>
 
@@ -67,11 +84,18 @@
   <script>
       $(document).ready(function(){
             $("#addResult").click(function(){
-                  var html = $(".tt:first").html();
+                  var html = $(".tt:last").html();
                   $("#resultTable").append("<tr>"+html+"</td>");
             })
 
-      })
+      });
+
+
+      function deleteResFn(id){
+            if(confirm("Delete!!!!!?")){
+                  window.location = "<?=site_url("creategame/delete_res/$game_id")?>/"+id;
+            }
+      }
 
 
 

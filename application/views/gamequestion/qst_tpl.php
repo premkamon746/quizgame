@@ -16,11 +16,11 @@
                                     <div class="upload_photo" >
 
                                           <?php if(isset($question) && $question->picture != ""){ ?>
-                                                <img src="<?=base_url()?>/uploads/<?=$game_id?>/<?=$question->picture ?>" width="200" class="selectImage" />
+                                                <img src="<?=base_url()?>uploads/<?=$game_id?>/<?=$question->picture ?>" width="200" class="selectImage" />
                                           <?php }else{ ?>
-                                                <img src="<?=base_url()?>/assets/img/no_preview.jpg" width="200" class="selectImage" />
+                                                <img src="<?=base_url()?>assets/img/no_preview.jpg" width="200" class="selectImage" />
                                           <?php }//endif?>
-                                      <input type="file" class="form-control"  name="userfile[]"    style="display: none;">
+                                      <input type="file" class="form-control"  name="userfile[]"   >
                                     </div>
                           </div>
                           </div>

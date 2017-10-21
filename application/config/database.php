@@ -83,10 +83,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'm6star',
+	'hostname' => 'sabyji.com',
+	'username' => 'ustarcom_qz',
+	'password' => 'F5S27Euh',
+	'database' => 'ustarcom_qz',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

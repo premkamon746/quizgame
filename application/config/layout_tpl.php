@@ -8,47 +8,6 @@
     <meta name="keyword" content="">
     <!-- <link rel="shortcut icon" href="img/favicon.png"> -->
 
-
-    <?php
-           $class = $this->router->fetch_class();
-           $med = $this->router->fetch_method();
-    ?>
-
-    <?php if ($class = "GameResult" && $med = "score" && isset($gameinfo)) : ?>
-
-
-          <?php $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
-
-          <?php foreach ($gameinfo->result() as $r) {?>
-
-            <?php if($r->show_score==1&&$r->show_total==0) :?>
-                        <meta property="og:title" content="<?=$total_point?> คะแนน  <?=isset($title)?$title: ''?>" />
-           <?php elseif($r->show_score==1&&$r->show_total==1) :?>
-            <meta property="og:title" content="<?=$total_point?>/<?=$game_point?> คะแนน  <?=isset($title)?$title: ''?>" />
-            <?php else:  ?>
-                       <meta property="og:title" content="<?=isset($title)?$title: ''?> ::: <?=isset($r->title)?$r->title: ''?>" />
-            <?php endif  ?>
-
-
-
-                <meta property="og:type" content="article" />
-                <!-- <meta property="og:image" content="" /> -->
-
-                <?php if(isset($picture) && $picture != "") :?>
-                       <meta property="og:image" content="http://<?=$_SERVER["HTTP_HOST"]?>/uploads/<?=$r->id?>/<?=$picture?>" />
-                <?php else :?>
-                       <meta property="og:image" content="http://<?=$_SERVER["HTTP_HOST"]?>/uploads/<?=$r->id?>/<?=$r->picture?>" />
-                <?php endif?>
-
-
-                <meta property="og:url" content="<?=$actual_link?>" />
-                <meta property="og:description" content="<?=isset($game_res)?$game_res: ''?>" />
-                <meta property="og:image:width" content="450"/>
-                <meta property="og:image:height" content="298"/>
-         <?php } ?>
-    <?php endif; ?>
-
-
     <title></title>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
@@ -75,38 +34,7 @@
   <body>
 
 
-
-
-
-<div navbar navbar-default  style="height:40px;">
-      <div class="container">
-
-
-            <ul class="nav  navbar-right" >
-
-                  <li>
-                        <?php
-                            $current_class = $this->router->fetch_class();
-                            $current_metd = $this->router->fetch_method();
-                         ?>
-                        <?php if($this->session->userdata("login")!="login")  :?>
-                            <!-- <a href="<?=$this->loginUrl ?>"><span class="glyphicon glyphicon glyphicon-log-in"></span> Facebook Login</a> -->
-                        <?php else :?>
-                            <a href="<?=site_url("$current_class/logout/$current_class/$current_metd")?>" >
-                                  <div class="btn-sm"><span class="glyphicon glyphicon-log-out"></span> Log out</div>
-                               </a>
-                        <?php endif?>
-                  </li>
-            </ul>
-            <ul class="nav  navbar-right" >
-                  <li style="margin-top:14px;">
-
-                        <div class="fb-like" data-href="https://www.facebook.com/sabyjicom/" data-layout="button" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-                  </li>
-            </ul>
-      </div>
-</div>
-<div class="navbar navbar-default " style="">
+<div class="navbar navbar-default ">
       <div class="container">
             <div class="navbar-header">
                   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -114,19 +42,24 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="<?=site_url("/");?>">
-                        <!-- <img src="<?=base_url()?>assets/img/logo.png" style="margin-top:-40px;" /> -->
-
-                  </a>
+                  <a class="navbar-brand" href="#">Brand</a>
             </div>
             <div class="collapse navbar-collapse nav">
                   <ul class="nav navbar-nav">
                         <li ><a href="<?=site_url("home"); ?>"><div class="btn-sm">หน้าแรก</div></a> </li>
                         <li ><a href="<?=site_url("mygame"); ?>"><div class="btn-sm">เกมของฉัน</div></a></li>
                         <li ><a href="<?=site_url("creategame"); ?>"><div class="btn-sm">สร้างเกม</div></a></li>
-                        <li>
-                              <a href="<?=site_url("profile"); ?>"><div class="btn-sm">ข้อมูลส่วนตัว</div></a>
-                        </li>
+                        <?php
+                            $current_class = $this->router->fetch_class();
+                            $current_metd = $this->router->fetch_method();
+                          ?>
+                        <?php if($this->session->userdata("login")!="login")  :?>
+                            <!-- <li><a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a></li> -->
+                        <?php else :?>
+                            <li ><a href="<?=site_url("$current_class/logout/$current_class/$current_metd")?>" >
+                                  <div class="btn-sm"><span class="glyphicon glyphicon-log-out"></span> Log out</div>
+                                </a></li>
+                        <?php endif?>
 
                   </ul>
                   <!-- <ul class="nav navbar-nav ">
@@ -139,18 +72,7 @@
 </div>
 
 
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- sabyji_footer_header -->
 
-<div style="text-align:center;">
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-5887066139594833"
-     data-ad-slot="2454745633"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</div><br/><br/>
 
         <section id="container" >
             <section class="wrapper"  style="max-width:800px; margin:0 auto; text-align: center;" >
@@ -163,10 +85,8 @@
                     <br/><br/><br/>
                     <!-- <a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a> -->
 
-                    <div class="fb-login-button"  data-scope="email,public_profile" data-max-rows="1" data-size="large" data-button-type="login_with"
+                    <div class="fb-login-button"  data-scope="email,public_profile,user_photos,publish_actions" data-max-rows="1" data-size="large" data-button-type="login_with"
                     data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState();"></div>
-                    <!-- <div class="fb-login-button"  data-scope="email,public_profile,user_photos,publish_actions" data-max-rows="1" data-size="large" data-button-type="login_with"
-                    data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState();"></div> -->
                     ล็อกอินก่อนจ้า
 
               <?php else :?>
@@ -206,8 +126,7 @@
                 FB.login(function(response) {
                       statusChangeCallback(response);
                   }, {
-                      scope: 'email,public_profile',
-                      //scope: 'email,public_profile,user_photos,publish_actions',
+                      scope: 'email,public_profile,user_photos,publish_actions',
                       return_scopes: true
                   });
 
@@ -274,31 +193,5 @@
           });
         }
       </script>
-
-<br/><br/><br/>
-<div style="text-align:center;">
-      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- sabyji_footer_header -->
-      <ins class="adsbygoogle"
-           style="display:inline-block;width:728px;height:90px"
-           data-ad-client="ca-pub-5887066139594833"
-           data-ad-slot="2454745633"></ins>
-      <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-</div>
-
-
-<br/><br/><br/>
-
-
-
-      <footer>
-            <div style="text-align:center;">
-                 <a href="<?=site_url("/")?>">Home</a> |
-                 <a href="<?=site_url("/content/policy")?>">Privacy Policy</a>
-           </div>
-      </footer>
-
   </body>
 </html>
