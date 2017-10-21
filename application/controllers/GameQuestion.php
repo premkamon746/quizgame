@@ -7,38 +7,206 @@ class GameQuestion extends Auth {
 	public function __construct(){
 		parent::__construct();
 	 	$this->load->model("game_md");
-        $this->load->model("question_md");
+        	$this->load->model("question_md");
+		$this->load->model("answer_md");
 	}
 
-	public function index($game_id)
+	public function index($game_id="", $qest_id="")
 	{
+		if ($this->mem_id == ""){
+		}elseif(!$this->game_md->isOwner($this->mem_id,$game_id)&&$game_id>0){
+		    echo "ไม่พบเกมส์ที่คุณเลือก";
+		    return;
+		}
+
 		$data = array();
+		//answer row
 
 
-        if(!$this->game_md->isOwner($this->mem_id,$game_id)&&$game_id>0){
-            echo "ไม่พบเกมส์ที่คุณเลือก";
-            exit;
-        }
 
-        $data["question_no"] = $this->question_md->checkQuestionNo($game_id);
 
-        if($post = $this->input->post()){
-               
-                $d["question"]  = $post["question"];
-                $d["no"]        = $data["question_no"];
-                $d["game_id"]   = $game_id;
-                $this->question_md->save($d);
-                if(isset($post["next"])){
-                    
-                }else if(isset($post["finish"])){
+		$data["game_id"] = $game_id;
+		$data["question_id"] = $qest_id;
 
-                }
-        }
+		$data["all_question"] = $this->question_md->getAllQuestion($game_id);
 
-        
-        $data["game_id"] = $game_id;
+
+		//add more choice logic
+		if($this->input->get("r")+$data["all_question"]->num_rows() <=20){
+			if($this->input->get("r")){
+				$data["r"] =$this->input->get("r")+1;
+			}else{
+				$data["r"] =2;
+			}
+		}else{
+			$data["r"] =20;
+			$data["message"] = "เพิ่มคำตอบสูงสุดได้ 20 คำตอบ";
+		}
+
+		//$data["answer"] = [1,2,3,4,5];
+
+		$question_no = $this->question_md->checkQuestionNo($game_id);
+
+
+		if($qest_id > 0){
+			$question = $this->question_md->get($qest_id);
+			$data["question"] = $question->row();
+			$answer =  $this->answer_md->getByQuestionId($qest_id);
+			if($answer->num_rows() > 0){
+				$data["answer"] = $answer->result();
+			}
+			$question_no = $data["question"]->no;
+		}
+
+
+
+		$data["question_no"] = $question_no;
+	        if($post = $this->input->post() ){
+			  print_r($post);
+
+			if(!$this->validPoint($post["point"])){
+			      $data["message"] = "กรุณาให้คะแนนข้อที่ตอบถูกอย่างน้อย 1 ข้อ";
+				$content["content"] = $this->load->view("gamequestion/index_tpl",$data,true);
+				$this->load->view("layout_tpl",$content);
+				return;
+		      }
+
+			  $i = 0;
+			  $question_id = 0;
+
+
+
+				foreach($_FILES['userfile']['name'] as $n){
+					$save = array();
+					$picture = "";
+
+
+					if($i==0){ //save question
+						if($n != ""){
+							$ext = pathinfo($n, PATHINFO_EXTENSION);
+							$picture = "{$game_id}_{$question_no}.{$ext}";
+						}
+						$save = array("question"=>$post["choice"][$i],
+								"picture"	=>$picture,
+								"no"		=>$question_no,
+								"game_id"	=>$game_id
+							);
+
+						if($qest_id > 0){
+							unset($save["picture"]);
+							$this->question_md->update($save,$qest_id);
+							$question_id = $qest_id;
+						}else{
+							$question_id = $this->question_md->save($save);
+						}
+						$res = $this->answer_md->deleteByQstID($question_id);
+
+						if($question_id <=0){
+							$data["message"] = "เกิดข้อผิดพลาดในการบันทึกคำถามกรุณาลองใหม่";
+							break;
+						}
+					}else{ //save answer
+						if($n != ""){
+							$ext = pathinfo($n, PATHINFO_EXTENSION);
+							$picture = "{$game_id}_{$question_no}_{$i}.{$ext}";
+						}
+						if(($post["choice"][$i]!="") || ($n != "")){
+							$save = array("answer"		=>$post["choice"][$i],
+									"picture"		=>$picture,
+									"no"			=>$i,
+									"question_id"	=>$question_id,
+									"game_id"	=>$game_id,
+									"point"	=>$post["point"][$i]
+							);
+
+							// if($qest_id > 0){
+							// 	$res = $this->answer_md->deleteByQstID($question_id);
+							// 	if($res){
+							// 		$this->answer_md->save($save);
+							// 	}
+							// }else{
+								$this->answer_md->save($save);
+							//}
+
+						}
+					} // end if check quesion
+					$picture = "";
+					$i++;
+				}
+
+				redirect("gamequestion/index/{$game_id}/{$question_id}");
+
+			//
+			// 	//$this->updateGame();
+			// 	$iq = $qest_id+1;
+			// 	$qcount = $this->question_md->get($iq);
+			// 	if($qcount->num_rows() > 0){
+			// 		redirect("gamequestion/index/$game_id/{$iq}");
+			// 	}else{
+			// 		if(isset($post["finish"])){
+			// 			redirect("creategame/finish/$game_id");
+			// 		}elseif(isset($post["next"])){
+			// 			redirect("gamequestion/index/$game_id");
+			// 		}
+			//
+			// 	}
+			// }
+        }//if post
+
+
+
 		$content["content"] = $this->load->view("gamequestion/index_tpl",$data,true);
 		$this->load->view("layout_tpl",$content);
+	}
+
+	// function updateGame($post){
+	// 	foreach($_FILES['userfile']['name'] as $n){
+	// 		$save = array();
+	// 		$picture = "";
+	//
+	//
+	// 		if($i==0){ //save question
+	// 			if($n != ""){
+	// 				$ext = pathinfo($n, PATHINFO_EXTENSION);
+	// 				$picture = "{$game_id}_{$question_no}.{$ext}";
+	// 			}
+	// 			$save = array("question"=>$post["choice"][$i],
+	// 					"picture"	=>$picture,
+	// 					"no"		=>$question_no,
+	// 					"game_id"	=>$game_id
+	// 				);
+	//
+	// 			$question_id = $this->question_md->save($save);
+	// 			if($question_id <=0){
+	// 				$data["message"] = "เกิดข้อผิดพลาดในการบันทึกคำถามกรุณาลองใหม่";
+	// 				break;
+	// 			}
+	// 		}else{ //save answer
+	// 			if($n != ""){
+	// 				$ext = pathinfo($n, PATHINFO_EXTENSION);
+	// 				$picture = "{$game_id}_{$question_no}{$i}in.{$ext}";
+	// 			}
+	// 			if(($post["choice"][$i]!="") || ($n != "")){
+	// 				$save = array("answer"		=>$post["choice"][$i],
+	// 						"picture"		=>$picture,
+	// 						"no"			=>$i,
+	// 						"question_id"	=>$question_id,
+	// 						"point"	=>$post["point"][$i]
+	// 				);
+	// 				$this->answer_md->save($save);
+	// 			}
+	// 		} // end if check quesion
+	// 		$picture = "";
+	// 		$i++;
+	// 	}
+	// }
+
+
+	private function validPoint($point){
+		foreach ($point as $p){
+			if ($p > 0) return true;
+		}
+		return false;
 	}
 
 	private function do_upload($game_id ,$filename)
@@ -53,8 +221,8 @@ class GameQuestion extends Auth {
             if (!file_exists($config['upload_path'])) {
 			    mkdir($config['upload_path'], 0777);
 			    echo "The directory  was successfully created.";
-			   
-			} 
+
+			}
             $this->load->library('upload', $config);
 
             if ( ! $this->upload->do_upload('userfile'))

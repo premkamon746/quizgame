@@ -5,7 +5,7 @@
           <h3>Preview</h3>
       </header>
       <div class="panel-body">
-      
+
 
         <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
 
@@ -17,7 +17,7 @@
 
                         <input type="file" class="form-control" id="title" name="userfile" placeholder="ชื่อเกม" maxlength="2000" required>
                         <p class="help-block">อัพโหลดรูปภาพปก เป็น file jpg,png,gif</p>
-               
+
                       </div>
                   </div>
 
@@ -25,17 +25,17 @@
                       <label for="inputEmail1" class="col-lg-2 col-sm-2 control-label">ชื่อเกม</label>
                       <div class="col-lg-10">
                         <?=$game->row()->title; ?>
-                         
+
                            <input type="text" class="form-control" id="title" name="title" placeholder="ชื่อเกม" value="<?=$game->row()->title; ?>" maxlength="2000" required>
                            <p class="help-block">กรอกชื่อเกม เช่น รูปภาพดาราตอนเด็ก คุณรู้หรือไม่</p>
-                        
+
 
                       </div>
                   </div>
 
                   <div class="form-group">
                       <div class="col-lg-offset-2 col-lg-10">
-                          <button type="submit" class="btn btn-danger">ต่อไป &gt;&gt;</button>
+                          <button type="submit" class="btn btn-danger">บันทึก</button>
                       </div>
                   </div>
 

@@ -6,7 +6,48 @@
     <meta name="description" content="">
     <meta name="author" content="Mosaddek">
     <meta name="keyword" content="">
-    <link rel="shortcut icon" href="img/favicon.png">
+    <!-- <link rel="shortcut icon" href="img/favicon.png"> -->
+
+
+    <?php
+           $class = $this->router->fetch_class();
+           $med = $this->router->fetch_method();
+    ?>
+
+    <?php if ($class = "GameResult" && $med = "score" && isset($gameinfo)) : ?>
+
+
+          <?php $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
+
+          <?php foreach ($gameinfo->result() as $r) {?>
+
+            <?php if($r->show_score==1&&$r->show_total==0) :?>
+                        <meta property="og:title" content="<?=$total_point?> คะแนน  <?=isset($title)?$title: ''?>" />
+           <?php elseif($r->show_score==1&&$r->show_total==1) :?>
+            <meta property="og:title" content="<?=$total_point?>/<?=$game_point?> คะแนน  <?=isset($title)?$title: ''?>" />
+            <?php else:  ?>
+                       <meta property="og:title" content="<?=isset($title)?$title: ''?> ::: <?=isset($r->title)?$r->title: ''?>" />
+            <?php endif  ?>
+
+
+
+                <meta property="og:type" content="article" />
+                <!-- <meta property="og:image" content="" /> -->
+
+                <?php if(isset($picture) && $picture != "") :?>
+                       <meta property="og:image" content="http://<?=$_SERVER["HTTP_HOST"]?>/uploads/<?=$r->id?>/<?=$picture?>" />
+                <?php else :?>
+                       <meta property="og:image" content="http://<?=$_SERVER["HTTP_HOST"]?>/uploads/<?=$r->id?>/<?=$r->picture?>" />
+                <?php endif?>
+
+
+                <meta property="og:url" content="<?=$actual_link?>" />
+                <meta property="og:description" content="<?=isset($game_res)?$game_res: ''?>" />
+                <meta property="og:image:width" content="450"/>
+                <meta property="og:image:height" content="298"/>
+         <?php } ?>
+    <?php endif; ?>
+
 
     <title></title>
 
@@ -25,60 +66,250 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="<?=base_url()?>assets/js/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
-<script src="<?=base_url()?>assets/bootstrap/js/bootstrap.min.js" crossorigin="anonymous"></script>
+ <script src="<?=base_url()?>assets/bootstrap/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="<?=base_url()?>assets/css/style.css" crossorigin="anonymous">
+
   </head>
 
   <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">WebSiteName</a>
-        </div>
-        <ul class="nav navbar-nav">
-          <li ><a href="<?=site_url("mygame"); ?>">My Games</a></li>
-          <!-- <li class="active"><a href="#">Page 1</a></li>
-          <li><a href="#">Page 2</a></li>
-          <li><a href="#">Page 3</a></li>-->
-        </ul> 
 
-       <!--  <form class="navbar-form navbar-left">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search">
-            <div class="input-group-btn">
-              <button class="btn btn-default" type="submit">
-                <i class="glyphicon glyphicon-search"></i>
-              </button>
-            </div>
-          </div>
-        </form> -->
 
-        <ul class="nav navbar-nav navbar-right">
-            <?php 
-                $current_class = $this->router->fetch_class(); 
-                $current_metd = $this->router->fetch_method();
-              ?>
-            <?php if($this->session->userdata("login")!="login")  :?>
-                <li><a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a></li>
-            <?php else :?>
-                <li><a href="<?=site_url("$current_class/logout/$current_class/$current_metd")?>"><button type="button" class="btn btn-danger">ออกจากระบบ</button></a></li>
-            <?php endif?>
-        </ul>
+
+
+
+<div navbar navbar-default  style="height:40px;">
+      <div class="container">
+
+
+            <ul class="nav  navbar-right" >
+
+                  <li>
+                        <?php
+                            $current_class = $this->router->fetch_class();
+                            $current_metd = $this->router->fetch_method();
+                         ?>
+                        <?php if($this->session->userdata("login")!="login")  :?>
+                            <!-- <a href="<?=$this->loginUrl ?>"><span class="glyphicon glyphicon glyphicon-log-in"></span> Facebook Login</a> -->
+                        <?php else :?>
+                            <a href="<?=site_url("$current_class/logout/$current_class/$current_metd")?>" >
+                                  <div class="btn-sm"><span class="glyphicon glyphicon-log-out"></span> Log out</div>
+                               </a>
+                        <?php endif?>
+                  </li>
+            </ul>
+            <ul class="nav  navbar-right" >
+                  <li style="margin-top:14px;">
+
+                        <div class="fb-like" data-href="https://www.facebook.com/sabyjicom/" data-layout="button" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+                  </li>
+            </ul>
       </div>
-    </nav>
+</div>
+<div class="navbar navbar-default " style="">
+      <div class="container">
+            <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="<?=site_url("/");?>">
+                        <!-- <img src="<?=base_url()?>assets/img/logo.png" style="margin-top:-40px;" /> -->
+
+                  </a>
+            </div>
+            <div class="collapse navbar-collapse nav">
+                  <ul class="nav navbar-nav">
+                        <li ><a href="<?=site_url("home"); ?>"><div class="btn-sm">หน้าแรก</div></a> </li>
+                        <li ><a href="<?=site_url("mygame"); ?>"><div class="btn-sm">เกมของฉัน</div></a></li>
+                        <li ><a href="<?=site_url("creategame"); ?>"><div class="btn-sm">สร้างเกม</div></a></li>
+                        <li>
+                              <a href="<?=site_url("profile"); ?>"><div class="btn-sm">ข้อมูลส่วนตัว</div></a>
+                        </li>
+
+                  </ul>
+                  <!-- <ul class="nav navbar-nav ">
+                  <ul class="nav navbar-nav navbar-right "> -->
+            </div>
+            <ul class="nav navbar-nav navbar-right ">
+
+            </ul>
+      </div>
+</div>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- sabyji_footer_header -->
+
+<div style="text-align:center;">
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-5887066139594833"
+     data-ad-slot="2454745633"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div><br/><br/>
 
         <section id="container" >
-            <section class="wrapper"  style="max-width:800px; margin:0 auto; text-align: center;">
+            <section class="wrapper"  style="max-width:800px; margin:0 auto; text-align: center;" >
 
-                <?php if(!$this->login && $this->session->userdata("login")!="login" ) : ?>
-                    
-                      <br/><br/><br/>
-                      <a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a>
-                      ล็อกอินก่อนจ้า
-                    
-                <?php else :?>
-                  <?=$content?>
-                <?php endif; ?>
-            </section>   
+                  <?php if(isset($bef_login)) { ?>
+                          <?=$bef_login ?>
+                  <?php } ?>
+              <?php if(isset($this->login) && !$this->login && $this->session->userdata("login")!="login" ) : ?>
+
+                    <br/><br/><br/>
+                    <!-- <a href="<?=$this->loginUrl?>"></span> <img src="<?=base_url()?>assets/img/facebook.png" border="1"/></a> -->
+
+                    <div class="fb-login-button"  data-scope="email,public_profile" data-max-rows="1" data-size="large" data-button-type="login_with"
+                    data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState();"></div>
+                    <!-- <div class="fb-login-button"  data-scope="email,public_profile,user_photos,publish_actions" data-max-rows="1" data-size="large" data-button-type="login_with"
+                    data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState();"></div> -->
+                    ล็อกอินก่อนจ้า
+
+              <?php else :?>
+                <?=$content?>
+              <?php endif; ?>
+
+
+
+
+            </section>
         </section>
+
+        <!-- Modal -->
+        <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="mesageModal"> <?=isset($message)&&$message!=""?$message:""?></h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+          //console.log('statusChangeCallback');
+          console.log(response);
+          if (response.status === 'connected') {
+            // Logged into your app and Facebook.
+            //testAPI();
+             var atk = response.authResponse.accessToken;
+             window.location.href = "<?=$this->cbUrl?>&atk="+atk;
+
+          } else {
+
+                FB.login(function(response) {
+                      statusChangeCallback(response);
+                  }, {
+                      scope: 'email,public_profile',
+                      //scope: 'email,public_profile,user_photos,publish_actions',
+                      return_scopes: true
+                  });
+
+            // The person is not logged into your app or we are unable to tell.
+
+            // document.getElementById('status').innerHTML = 'Please log ' +
+            //   'into this app.';
+            //console.log(response);
+          }
+        }
+
+        // This function is called when someone finishes with the Login
+        // Button.  See the onlogin handler attached to it in the sample
+        // code below.
+        function checkLoginState() {
+
+             FB.getLoginStatus(function(response) {
+               statusChangeCallback(response);
+             });
+
+        }
+
+        window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '211474989230282',
+          cookie     : true,  // enable cookies to allow the server to access
+            status: true,                  // the session
+          xfbml      : true,  // parse social plugins on this page
+          version    : 'v2.8' ,// use graph api version 2.8
+          oauth         : true
+        });
+
+        // Now that we've initialized the JavaScript SDK, we call
+        // FB.getLoginStatus().  This function gets the state of the
+        // person visiting this page and can return one of three states to
+        // the callback you provide.  They can be:
+        //
+        // 1. Logged into your app ('connected')
+        // 2. Logged into Facebook, but not your app ('not_authorized')
+        // 3. Not logged into Facebook and can't tell if they are logged into
+        //    your app or not.
+        //
+        // These three cases are handled in the callback function.
+
+
+
+        };
+
+        // Load the SDK asynchronously
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        // Here we run a very simple test of the Graph API after login is
+        // successful.  See statusChangeCallback() for when this call is made.
+        function testAPI() {
+          console.log('Welcome!  Fetching your information.... ');
+          FB.api('/me', function(response) {
+                console.log(response);
+          });
+        }
+      </script>
+
+<br/><br/><br/>
+<div style="text-align:center;">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- sabyji_footer_header -->
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:728px;height:90px"
+           data-ad-client="ca-pub-5887066139594833"
+           data-ad-slot="2454745633"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+</div>
+
+
+<br/><br/><br/>
+
+
+
+      <footer>
+            <div style="text-align:center;">
+                 <a href="<?=site_url("/")?>">Home</a> |
+                 <a href="<?=site_url("/content/policy")?>">Privacy Policy</a>
+           </div>
+      </footer>
+
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108417438-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-108417438-1');
+</script>
+
+
   </body>
 </html>

@@ -8,7 +8,8 @@ class Upload extends Auth {
 public function __construct(){
 		parent::__construct();
 	 	$this->load->model("game_md");
-        $this->load->model("question_md");
+        	$this->load->model("question_md");
+		$this->load->model("answer_md");
 	}
 
 	public function picture($game_id,$question_no,$no=""){
@@ -18,14 +19,22 @@ public function __construct(){
 			exit;
 		}
 
-		$fno = "";
-		if($no > 0){
-			$fno = "_$no";
+
+		if($no != ""){
+			$no = "_".$no;
 		}
 
 		$ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-		$file_name = "{$game_id}_{$question_no}{$fno}.$ext";
-		$this->do_upload($game_id,$file_name);
+		$file_name = "{$game_id}_{$question_no}{$no}.$ext";
+		$upload = $this->do_upload($game_id,$file_name);
+		if($upload){
+			$member_id = $this->session->userdata("member_id");
+			if($no > 0){
+				$this->answer_md->updaeImage($member_id,$game_id,$question_no,$no,$file_name);
+			}else{
+				$this->question_md->updaeImage($member_id,$game_id,$question_no,$file_name);
+			}
+		}
 
 	}
 
@@ -42,8 +51,8 @@ public function __construct(){
    //          if (!file_exists($config['upload_path'])) {
 			//     mkdir($config['upload_path'], 0777);
 			//     echo "The directory  was successfully created.";
-			   
-			// } 
+
+			// }
 
             $this->load->library('upload', $config);
 
@@ -52,6 +61,7 @@ public function __construct(){
                     $error = array('error' => $this->upload->display_errors());
                     //echo $this->upload->display_errors();
                     //$this->load->view('upload_form', $error);
+			  return false;
             }
             else
             {
@@ -59,6 +69,8 @@ public function __construct(){
                     $file_name = $data["file_name"];
                     echo base_url()."uploads/$game_id/$file_name?t=".time();
                     //$this->load->view('upload_success', $data);
+			  return true;
             }
+		return false;
     }
 }

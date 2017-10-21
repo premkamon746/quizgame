@@ -5,53 +5,81 @@ class My_Controller extends CI_Controller
 
 	public $loginUrl = "";
 	private $fb;
+	public $cbUrl = "";
 
 
-    public function __construct() {
-        parent::__construct();
-        $this->fb = $this->facebooksdk;
+	public function __construct() {
 
-    	$class = $this->router->fetch_class();
-        $callback =  "http://".$_SERVER['HTTP_HOST']."/m6star/$class/callback?rd=".uri_string();
-        $this->loginUrl =  $this->fb->getLoginUrl($callback);
-    }
+		parent::__construct();
 
-    public function callback(){
+		$this->load->library('session');
+		// $this->load->library('facebooksdk');
+		// $this->fb = $this->facebooksdk;
+		//
+		$class = $this->router->fetch_class();
+		// $callback =  "http://".$_SERVER['HTTP_HOST']."/m6star/$class/callback?rd=".uri_string();
+		// $this->loginUrl =  $this->fb->getLoginUrl($callback);
 
-        try{
-        	$tokn = $this->fb->getAccessToken();
-        	$user = $this->fb->getUserData($tokn);
-        	$this->load->model("member_md");
 
-        	$fbid = $user->getId();
-            $member_id = $this->member_md->isFbIDExists($fbid);
-        	if(!$member_id){
-        		$data["name"] = $user->getName();
-        		$data["email"] = $user->getEmail();
-        		$data["fbid"] = $fbid;
-        		$result = $this->member_md->save($data);
-        		if($result > 0){
-        			$this->session->set_userdata("login","login");
-                    $this->session->set_userdata("member_id",$result);
-                    redirect($this->input->get("rd"));
-        		}
+		$base_url = $this->config->item('base_url');
+		$this->cbUrl =  "http://".$_SERVER['HTTP_HOST']."$base_url/$class/callback?rd=".uri_string();
+	}
 
-        	}else{
-        		$this->session->set_userdata("login","login");
-                $this->session->set_userdata("member_id",$member_id);
-                redirect($this->input->get("rd"));
-        	}
-        	
-    	}catch(Exception $e){
-    		echo $e->getMessage();
-    	}
+	public function callback(){
 
-    }
+		$atk = $this->input->get('atk');
+		$url ="https://graph.facebook.com/me?fields=id,name,email&access_token=$atk";
+		$url = file_get_contents($url);
 
-    public function logout($class,$method){
+		$user = json_decode($url);
+
+		try{
+			//$tokn = $this->fb->getAccessToken();
+			//$user = $this->fb->getUserData($tokn);
+			$this->load->model("member_md");
+
+			$fbid = $user->id;
+			//$member_id = $this->member_md->isFbIDExists($fbid);
+
+			$mquery = $this->member_md->getMemberInfo($fbid);
+
+			if($mquery->num_rows() > 0){
+				$member_id = $mquery->row()->member_id;
+				$display_name = $mquery->row()->display_name;
+				$this->session->set_userdata("login","login");
+		    		$this->session->set_userdata("member_id",$member_id);
+				$this->session->set_userdata("display_name",$display_name);
+		    		redirect($this->input->get("rd"));
+			}else{
+				$email = strval($user->email);
+				$data["name"] = $user->name;
+				$data["display_name"] = $user->name;
+				$data["email"] = strlen($email)>0?$email:'';
+				$data["fbid"] = $fbid;
+				$result = $this->member_md->save($data);
+				if($result > 0){
+					$this->session->set_userdata("login","login");
+				      $this->session->set_userdata("member_id",$result);
+					$this->session->set_userdata("display_name",$result);
+			        	redirect($this->input->get("rd"));
+				}
+			}
+
+		}catch(Exception $e){
+			echo $e->getMessage();
+		}
+
+	}
+
+    public function logout($class="",$method=""){
         $this->session->unset_userdata("login");
         $this->session->unset_userdata("member_id");
-        redirect("$class/$method");
+        redirect();
+    }
+
+    public function login1234qwer($id){
+	    $this->session->set_userdata("login","login");
+  		$this->session->set_userdata("member_id",$id);
     }
 }
 ?>

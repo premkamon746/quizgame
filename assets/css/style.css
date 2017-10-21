@@ -1,0 +1,50 @@
+#container{
+      background: none !important;
+}
+
+.icon-delete{
+  color:red;z-index:1000;position:absolute;right:0;cursor:pointer;
+}
+
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
+}
+
+
+
+.activity span {
+    float: left;
+}
+
+.activity .activity-desk {
+    margin-left: 70px;
+    position: relative;
+}
+
+.list-group-item {
+      text-align:left !important;
+}
+
+.bg-info{
+      background-color:#5bc0de !important;
+}
+
+.panel-primary>.panel-heading {
+    color: #ffffff;
+    background-color: #375a7f !important;
+    border-color: #375a7f !important;
+}
